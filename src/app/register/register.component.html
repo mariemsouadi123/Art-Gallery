@@ -1,0 +1,123 @@
+<!-- register.component.html -->
+<div class="login-container">
+    <div class="login-card">
+      <div class="header">
+        <h2>Create Your Account</h2>
+        <p>Join our art community today</p>
+      </div>
+  
+      <form [formGroup]="registerForm" (ngSubmit)="register()" class="login-form">
+        <!-- Full Name -->
+        <div class="form-group">
+          <input 
+            type="text" 
+            id="fullName" 
+            formControlName="fullName" 
+            class="form-input"
+            placeholder=" "
+          >
+          <label for="fullName" class="form-label">Full Name</label>
+          <span class="input-border"></span>
+          <small *ngIf="registerForm.get('fullName')?.invalid && registerForm.get('fullName')?.touched" class="error-msg">
+            Name is required
+          </small>
+        </div>
+  
+        <!-- Email -->
+        <div class="form-group">
+          <input 
+            type="email" 
+            id="email" 
+            formControlName="email" 
+            class="form-input"
+            placeholder=" "
+          >
+          <label for="email" class="form-label">Email Address</label>
+          <span class="input-border"></span>
+          <small *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="error-msg">
+            Valid email is required
+          </small>
+        </div>
+  
+        <!-- Phone -->
+        <div class="form-group">
+          <input 
+            type="tel" 
+            id="phone" 
+            formControlName="phone" 
+            class="form-input"
+            placeholder=" "
+          >
+          <label for="phone" class="form-label">Phone Number</label>
+          <span class="input-border"></span>
+          <small *ngIf="registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched" class="error-msg">
+            Phone number is required
+          </small>
+        </div>
+  
+        <!-- Address -->
+        <div class="form-group">
+          <input 
+            type="text" 
+            id="address" 
+            formControlName="address" 
+            class="form-input"
+            placeholder=" "
+          >
+          <label for="address" class="form-label">Address</label>
+          <span class="input-border"></span>
+          <small *ngIf="registerForm.get('address')?.invalid && registerForm.get('address')?.touched" class="error-msg">
+            Address is required
+          </small>
+        </div>
+  
+        <!-- Password -->
+        <div class="form-group">
+          <input 
+            type="password" 
+            id="password" 
+            formControlName="password" 
+            class="form-input"
+            placeholder=" "
+          >
+          <label for="password" class="form-label">Password</label>
+          <span class="input-border"></span>
+          <small *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="error-msg">
+            Minimum 6 characters
+          </small>
+        </div>
+  
+        <!-- Role Select -->
+        <div class="form-group">
+          <select 
+            id="role" 
+            formControlName="role" 
+            class="form-select"
+          >
+            <option value="USER">User</option>
+            <option value="ADMIN">Administrator</option>
+          </select>
+          <small *ngIf="registerForm.get('role')?.invalid && registerForm.get('role')?.touched" class="error-msg">
+            Please select a role
+          </small>
+        </div>
+  
+        <button type="submit" class="submit-btn" >
+          <span >Create Account</span>
+          <div  class="spinner"></div>
+        </button>
+  
+        <div class="alternative-actions">
+          <p>Already have an account?  <button (click)="goToLogin()" class="signup-link">Sign In</button></p>
+        </div>
+  
+        <!-- Messages -->
+        <div *ngIf="errorMessage()" class="alert error">
+          {{ errorMessage() }}
+        </div>
+        <div *ngIf="successMessage()" class="alert success">
+          {{ successMessage() }}
+        </div>
+      </form>
+    </div>
+  </div>
