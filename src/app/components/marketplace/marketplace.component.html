@@ -1,0 +1,54 @@
+<nav class="navbar">
+    <div class="navbar-brand">Art Gallery</div>
+    <div class="navbar-links">
+      <a routerLink="/user-home" class="nav-link">Home</a>
+      <a routerLink="/marketplace" class="nav-link">Marketplace</a>
+      <a routerLink="/profile" class="nav-link">Profil</a>
+      <a routerLink="/favorites" class="nav-link">Favoris</a>
+      <div class="cart-icon" (click)="goToCheckout()">
+        🛒 <span class="cart-count">{{ cartService.cartItems().length }}</span>
+      </div>
+    </div>
+  </nav>
+  
+  <div class="marketplace-container">
+    <h1>Artwork Marketplace</h1>
+  
+    @if (error()) {
+      <div class="error-message">
+        {{ error() }}
+        <button (click)="loadAllArtworks()">Réessayer</button>
+      </div>
+    }
+  
+    @if (isLoading()) {
+      <div class="loading-spinner">
+        <div class="spinner"></div>
+      </div>
+    } @else {
+      <div class="artworks-list">
+        @for (artwork of filteredArtworks(); track artwork.id) {
+          <div class="artwork-item">
+            <div class="artwork-image-container">
+              <img [src]="artwork.imageUrl" [alt]="artwork.title" class="artwork-image" (error)="handleImageError($event)">
+            </div>
+            <div class="artwork-info">
+              <h3>{{ artwork.title }}</h3>
+              <p class="artist">Artiste: {{ artwork.artistName }}</p>
+              <p class="price">Prix: {{ artwork.price | currency:'EUR':'symbol':'1.2-2' }}</p>
+              <p class="description">{{ artwork.description }}</p>
+              <div class="artwork-actions">
+                <button class="action-btn add-to-cart" (click)="addToCart(artwork)">
+                  Ajouter au panier
+                </button>
+                <button class="action-btn view-details" (click)="viewDetails(artwork.id)">
+                  Voir détails
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+  
