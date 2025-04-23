@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { EventService } from '../../../services/event.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../../../services/auth.service';
+import { AuthService, User } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-event-details',
@@ -29,16 +29,20 @@ export class EventDetailsComponent implements OnInit {
     this.getCurrentUser();
   }
 
-  /** ✅ Fix TypeScript error by ensuring we properly call getUser() */
   getCurrentUser(): void {
-    this.authService.getUser().subscribe({
-      next: (user: { id: number; username: string; email: string }) => {
-        this.currentUserId = user.id;
-        this.loadEvent();
+    this.authService.getCurrentUserObservable().subscribe({
+      next: (user: User | null) => {
+        if (user) {
+          this.currentUserId = user.id;
+          this.loadEvent();
+        } else {
+          this.currentUserId = null;
+          this.router.navigate(['/login']);
+        }
       },
       error: () => {
         this.currentUserId = null;
-        this.router.navigate(['/login']); // Redirect if not logged in
+        this.router.navigate(['/login']);
       }
     });
   }
