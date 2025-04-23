@@ -1,8 +1,9 @@
 import { Component, OnInit, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { ArtworkService } from '../../services/artwork.service';
+import { Artwork, ArtworkService } from '../../services/artwork.service';
 import { CartService } from '../../services/cart.service';
+import { FavoritesService } from '../../services/favorites.service';
 
 @Component({
   selector: 'app-marketplace',
@@ -29,7 +30,8 @@ export class MarketplaceComponent implements OnInit {
   // CartService doit être public pour être accessible dans le template
   constructor(
     private artworkService: ArtworkService,
-    public cartService: CartService, 
+    public cartService: CartService,
+    public favoritesService: FavoritesService, 
     private router: Router
   ) {}
 
@@ -81,5 +83,9 @@ export class MarketplaceComponent implements OnInit {
   // Gestion des erreurs d'affichage d'image
   handleImageError(event: Event): void {
     (event.target as HTMLImageElement).src = 'assets/images/placeholder.png';
+  }
+  toggleFavorite(artwork: Artwork, event: Event): void {
+    event.stopPropagation(); // Empêche la propagation du clic
+    this.favoritesService.toggleFavorite(artwork);
   }
 }

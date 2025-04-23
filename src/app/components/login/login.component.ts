@@ -13,29 +13,40 @@ import { AuthService } from '../../services/auth.service';
 })
 export class LoginComponent {
   user = { email: '', password: '' };
+  isLoading = false;
+  errorMessage = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   login() {
-    this.authService.login(this.user).subscribe(response => {
-      if (response.role === 'ADMIN') {
-        this.router.navigate(['/admin-dashboard']);
-      } else {
-        // ✅ Stocker full_name, email et rôle
-        localStorage.setItem('user', JSON.stringify({
-          full_name: response.full_name, 
-          email: response.email, 
-          role: response.role 
-        }));
+    this.isLoading = true;
+    this.errorMessage = '';
 
-        this.router.navigate(['/user-home']);
+    this.authService.login(this.user).subscribe({
+      next: (user) => {
+        this.isLoading = false;
+        if (user.role === 'ADMIN') {
+          this.router.navigate(['/admin-dashboard']);
+        } else {
+          this.router.navigate(['/user-home']);
+        }
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.errorMessage = error.error?.message || 'Invalid email or password';
+        console.error('Login error:', error);
       }
-    }, (error: any) => {
-      console.error('Login failed', error);
     });
   }
 
   goToRegister() {
     this.router.navigate(['/register']);
+  }
+
+  goToForgotPassword() {
+    this.router.navigate(['/forgot-password']);
   }
 }

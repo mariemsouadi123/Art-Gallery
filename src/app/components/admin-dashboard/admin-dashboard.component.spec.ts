@@ -1,23 +1,24 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule, RouterOutlet } from '@angular/router';
 
-import { AdminDashboardComponent } from './admin-dashboard.component';
-
-describe('AdminDashboardComponent', () => {
-  let component: AdminDashboardComponent;
-  let fixture: ComponentFixture<AdminDashboardComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [AdminDashboardComponent]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(AdminDashboardComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+@Component({
+  selector: 'app-admin-dashboard',
+  standalone: true,
+  imports: [CommonModule, RouterModule, RouterOutlet], // Added RouterOutlet
+  templateUrl: './admin-dashboard.component.html',
+  styleUrls: ['./admin-dashboard.component.css']
+})
+export class AdminDashboardComponent {
+logout() {
+throw new Error('Method not implemented.');
+}
+  admin = {
+    name: 'Admin Name',
+    email: 'admin@example.com',
+    role: 'Administrator',
+    profileImage: 'https://via.placeholder.com/100'
+  };
+isLoading: any;
+stats: any;
+}

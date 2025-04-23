@@ -189,3 +189,97 @@
   .view-details:hover {
     background-color: #27ae60;
   }
+  /* Add these new styles */
+.tabs {
+  display: flex;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.tabs button {
+  padding: 10px 20px;
+  border: none;
+  background: #f0f0f0;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.tabs button.active {
+  background: #007bff;
+  color: white;
+}
+
+.artwork-item.sold {
+  position: relative;
+  opacity: 0.8;
+}
+
+.sold-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: red;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+/* Keep your existing styles and add these modifications */
+.artwork-actions {
+  margin-top: 15px;
+}
+
+.action-btn {
+  padding: 8px 15px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.add-to-cart {
+  background: #28a745;
+  color: white;
+}
+
+.view-details {
+  background: #17a2b8;
+  color: white;
+}
+
+.artwork-item.sold .artwork-actions {
+  display: none;
+}
+.favorite-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255, 255, 255, 0.8);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.favorite-btn:hover {
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.favorite-btn.active {
+  color: red;
+}
+
+.artwork-image-container {
+  position: relative;
+}

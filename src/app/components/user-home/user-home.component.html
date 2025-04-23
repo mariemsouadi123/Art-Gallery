@@ -1,39 +1,41 @@
 <nav class="navbar">
-    <div class="navbar-brand">Art Gallery</div>
-    <div class="navbar-links">
-      <a routerLink="/user-home" class="nav-link">Home</a>
-      <a routerLink="/marketplace" class="nav-link">Marketplace</a>
-      <a routerLink="/profile" class="nav-link">Profil</a>
-      <a routerLink="/favorites" class="nav-link">Favoris</a>
-      <button (click)="logout()" class="logout-btn">Logout</button>
-  
-    </div>
-  </nav>
-  <div class="user-home-container">
-    <div class="welcome-section">
-      <h1>Welcome, {{ fullName }}!</h1>
-      @if (userImage) {
-        <img [src]="userImage" alt="Profile Image" class="profile-image">
-      }
-    </div>
-  
-    @if (purchases.length > 0) {
-      <div class="purchases-section">
-        <h2>Your Recent Purchases</h2>
-        <div class="purchases-list">
-          @for (purchase of purchases; track purchase.artworkId) {
-            <div class="purchase-card">
-              <h3>{{ purchase.title }}</h3>
-              <p>Amount: {{ purchase.amount | currency:'EUR':'symbol':'1.2-2' }}</p>
-              <p>Date: {{ purchase.date | date:'mediumDate' }}</p>
-            </div>
-          }
-        </div>
-      </div>
-    } @else {
-      <div class="no-purchases">
-        <p>You haven't made any purchases yet.</p>
-        <a routerLink="/marketplace" class="btn btn-primary">Browse Artworks</a>
-      </div>
-    }
+  <div class="navbar-brand">Art Gallery</div>
+  <div class="navbar-links">
+    <a routerLink="/user-home" class="nav-link">Home</a>
+    <a routerLink="/marketplace" class="nav-link">Marketplace</a>
+    <a routerLink="/user-profile" class="nav-link">Profil</a>
+    <a routerLink="/favorites" class="nav-link">Favoris</a>
+    <button (click)="logout()" class="logout-btn">Logout</button>
   </div>
+</nav>
+
+<div class="user-home-container">
+  <div class="welcome-section">
+      <h1>Welcome, {{ fullName }}!</h1>
+      <img [src]="userImage" alt="Profile Image" class="profile-image">
+  </div>
+
+  @if (isLoading) {
+      <div class="loading-message">Loading your purchases...</div>
+  } @else {
+      @if (purchases.length > 0) {
+          <div class="purchases-section">
+              <h2>Your Recent Purchases</h2>
+              <div class="purchases-list">
+                  @for (purchase of purchases; track purchase.artworkId) {
+                      <div class="purchase-card">
+                          <h3>{{ purchase.title }}</h3>
+                          <p>Amount: {{ purchase.amount | currency:'EUR':'symbol':'1.2-2' }}</p>
+                          <p>Date: {{ purchase.date | date:'mediumDate' }}</p>
+                      </div>
+                  }
+              </div>
+          </div>
+      } @else {
+          <div class="no-purchases">
+              <p>You haven't made any purchases yet.</p>
+              <a routerLink="/marketplace" class="btn btn-primary">Browse Artworks</a>
+          </div>
+      }
+  }
+</div>

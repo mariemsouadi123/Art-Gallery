@@ -1,0 +1,115 @@
+.dashboard-container {
+    display: flex;
+    height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .sidebar {
+    width: 250px;
+    background-color: #343a40;
+    color: white;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .sidebar h3 {
+    color: #f8f9fa;
+    border-bottom: 1px solid #6c757d;
+    padding-bottom: 0.5rem;
+  }
+  
+  .sidebar a {
+    color: #dee2e6;
+    text-decoration: none;
+    padding: 0.5rem;
+    border-radius: 5px;
+  }
+  
+  .sidebar a:hover {
+    background-color: #495057;
+  }
+  
+  .main-content {
+    flex: 1;
+    padding: 2rem;
+    background-color: #f1f3f5;
+    overflow-y: auto;
+  }
+  
+  .admin-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .admin-info img {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+  }
+  
+  .stats {
+    display: flex;
+    gap: 2rem;
+  }
+  
+  .stat-card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center;
+    flex: 1;
+  }
+  
+  .stat-card h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  /* src/app/components/admin-dashboard/admin-dashboard.component.css */
+.card {
+  transition: transform 0.3s ease;
+  height: 100%;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.card-title {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.card-text {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.admin-profile img {
+  border: 3px solid rgba(255,255,255,0.2);
+}
+
+.nav-link {
+  transition: all 0.2s ease;
+  border-radius: 4px;
+  padding: 8px 12px;
+}
+
+.nav-link:hover {
+  background-color: rgba(255,255,255,0.1);
+}
+
+.nav-link.active {
+  background-color: rgba(255,255,255,0.2);
+  font-weight: 500;
+}
+
+.nav-link i {
+  width: 20px;
+  text-align: center;
+}
