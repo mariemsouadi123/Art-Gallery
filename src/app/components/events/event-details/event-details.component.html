@@ -1,0 +1,69 @@
+<p>event-details works!</p>
+<div class="container mt-4" *ngIf="!loading && event">
+    <div class="row">
+      <div class="col-md-6">
+        <img [src]="event.imageUrl || 'assets/default-event.jpg'" 
+             class="img-fluid rounded mb-3" 
+             [alt]="event.title">
+      </div>
+      <div class="col-md-6">
+        <h1>{{ event.title }}</h1>
+        <p class="lead">{{ event.description }}</p>
+        
+        <div class="card mb-4">
+          <div class="card-body">
+            <h5 class="card-title">Event Details</h5>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <i class="bi bi-calendar-event me-2"></i>
+                <strong>Date:</strong> {{ event.startDate | date:'fullDate' }}
+              </li>
+              <li class="list-group-item">
+                <i class="bi bi-clock me-2"></i>
+                <strong>Time:</strong> {{ event.startDate | date:'shortTime' }} - {{ event.endDate | date:'shortTime' }}
+              </li>
+              <li class="list-group-item" *ngIf="event.location">
+                <i class="bi bi-geo-alt me-2"></i>
+                <strong>Location:</strong> {{ event.location }}
+              </li>
+              <li class="list-group-item" *ngIf="event.onlineUrl">
+                <i class="bi bi-link-45deg me-2"></i>
+                <strong>Join Online:</strong> 
+                <a [href]="event.onlineUrl" target="_blank">Click here</a>
+              </li>
+              <li class="list-group-item">
+                <i class="bi bi-tag me-2"></i>
+                <strong>Price:</strong> {{ event.price | currency }}
+              </li>
+              <li class="list-group-item" *ngIf="event.capacity">
+                <i class="bi bi-people me-2"></i>
+                <strong>Capacity:</strong> {{ event.capacity }} spots available
+              </li>
+            </ul>
+          </div>
+        </div>
+  
+        <div class="d-flex gap-2">
+          <button *ngIf="currentUserId && !isRegistered"
+                  (click)="registerForEvent()"
+                  class="btn btn-primary">
+            Register Now
+          </button>
+          <a *ngIf="currentUserId && isRegistered"
+             [routerLink]="['/events', event.id, 'ticket']"
+             class="btn btn-success">
+            View Your Ticket
+          </a>
+          <a routerLink="/events" class="btn btn-outline-secondary ms-auto">
+            Back to Events
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div *ngIf="loading" class="text-center my-5">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
