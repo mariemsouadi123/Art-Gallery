@@ -4,6 +4,9 @@ import { Injectable, signal } from '@angular/core';
   providedIn: 'root'
 })
 export class CartService {
+  totalAmount() {
+    throw new Error('Method not implemented.');
+  }
   cartItems = signal<any[]>([]);
 
   addToCart(artwork: any) {

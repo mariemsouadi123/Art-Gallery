@@ -1,9 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, Inject, PLATFORM_ID, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CartService } from '../../services/cart.service';
 import { PaymentService } from '../../services/payment.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-checkout',
@@ -15,65 +17,92 @@ import { Router } from '@angular/router';
 export class CheckoutComponent {
   cartService = inject(CartService);
   paymentService = inject(PaymentService);
+  authService = inject(AuthService);
   router = inject(Router);
 
-  fullName: string | null = null;
-  email: string | null = null;
+  fullName: string = '';
+  email: string = '';
+  userId: number | null = null;
   paymentSuccess = false;
   isLoading = false;
   paymentMessage = '';
   paymentError = '';
 
-  // Form variables for payment details
+  // Form variables
   cardNumber: string = '';
   expiryDate: string = '';
   cvv: string = '';
+
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
 
   ngOnInit() {
     this.getUserData();
   }
 
   getUserData() {
-    if (typeof window !== 'undefined' && window.localStorage) {
-      const userData = localStorage.getItem('user');
-      if (userData) {
-        const user = JSON.parse(userData);
-        this.fullName = user.full_name;
+    if (isPlatformBrowser(this.platformId)) {
+      const user = this.authService.getCurrentUser();
+      if (user) {
+        this.fullName = user.fullName; // Changed from full_name to fullName
         this.email = user.email;
+        this.userId = user.id;
+      } else {
+        this.router.navigate(['/login']);
       }
     }
   }
 
-  processPayment() {
+  async processPayment() {
     this.isLoading = true;
     this.paymentError = '';
 
-    // Validate form
     if (!this.validateForm()) {
       this.isLoading = false;
       return;
     }
 
-    // Process each item in cart
-    const paymentPromises = this.cartService.cartItems().map(item => 
-      this.paymentService.processPayment(item.id, item.price).toPromise()
-    );
+    if (!this.userId) {
+      this.paymentError = 'User not authenticated';
+      this.isLoading = false;
+      return;
+    }
 
-    Promise.all(paymentPromises)
-      .then((responses) => {
-        this.handlePaymentSuccess(responses);
-      })
-      .catch(error => {
-        this.handlePaymentError(error);
-      })
-      .finally(() => {
-        this.isLoading = false;
-      });
+    try {
+      // Process all items in cart sequentially
+      for (const item of this.cartService.cartItems()) {
+        await this.paymentService.processPayment(
+          item.id, 
+          this.userId, 
+          item.price
+        ).toPromise();
+      }
+
+      this.paymentSuccess = true;
+      this.paymentMessage = 'Payment successful!';
+      this.cartService.clearCart();
+      
+      setTimeout(() => this.router.navigate(['/user-home']), 2000);
+    } catch (error: any) {
+      console.error('Payment error:', error);
+      this.paymentError = error.error?.message || 'Payment failed. Please try again.';
+    } finally {
+      this.isLoading = false;
+    }
   }
 
   private validateForm(): boolean {
     if (!this.cardNumber || !this.expiryDate || !this.cvv) {
       this.paymentError = 'Please fill all payment details';
+      return false;
+    }
+
+    if (this.cardNumber.replace(/\s/g, '').length !== 16) {
+      this.paymentError = 'Card number must be 16 digits';
+      return false;
+    }
+
+    if (this.cvv.length !== 3) {
+      this.paymentError = 'CVV must be 3 digits';
       return false;
     }
 
@@ -83,46 +112,5 @@ export class CheckoutComponent {
     }
 
     return true;
-  }
-
-  private handlePaymentSuccess(responses: any[]) {
-    this.paymentSuccess = true;
-    this.paymentMessage = 'Payment successful!';
-    
-    // Save purchases to local storage
-    this.savePurchases(responses);
-    
-    // Clear cart
-    this.cartService.clearCart();
-    
-    // Redirect to home after 2 seconds
-    setTimeout(() => {
-      this.router.navigate(['/user-home']);
-    }, 2000);
-  }
-
-  private handlePaymentError(error: any) {
-    console.error('Payment error:', error);
-    this.paymentError = error.error?.message || 'Payment failed. Please try again.';
-  }
-
-  private savePurchases(responses: any[]) {
-    if (typeof window !== 'undefined') {
-      const storedPurchases = localStorage.getItem('purchases');
-      let purchases = storedPurchases ? JSON.parse(storedPurchases) : [];
-
-      responses.forEach(response => {
-        if (response?.payment) {
-          purchases.push({
-            artworkId: response.payment.artwork.id,
-            title: response.payment.artwork.title,
-            amount: response.payment.amount,
-            date: new Date().toISOString()
-          });
-        }
-      });
-
-      localStorage.setItem('purchases', JSON.stringify(purchases));
-    }
   }
 }

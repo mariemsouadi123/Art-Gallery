@@ -1,64 +1,74 @@
 <div class="login-container">
-    <div class="login-card">
-      <div class="header">
-        <h2>Welcome Back</h2>
-        <p>Please sign in to continue</p>
-      </div>
-  
-      <form (ngSubmit)="login()" class="login-form">
-        <div class="form-group">
-          <input 
-            type="email" 
-            id="email" 
-            [(ngModel)]="user.email" 
-            name="email" 
-            required
-            class="form-input"
-            placeholder=" "
-          >
-          <label for="email" class="form-label">Email Address</label>
-          <span class="input-border"></span>
-        </div>
-  
-        <div class="form-group">
-          <input 
-            type="password" 
-            id="password" 
-            [(ngModel)]="user.password" 
-            name="password" 
-            required 
-            minlength="6"
-            class="form-input"
-            placeholder=" "
-          >
-          <label for="password" class="form-label">Password</label>
-          <span class="input-border"></span>
-        </div>
-  
-        <button type="submit" class="submit-btn" >
-          <span class="spinner">Sign In</span>
-        
-        </button>
-  
-        <!-- Dans la section alternative-actions du login -->
-  <div class="alternative-actions">
-    <a routerLink="/forgot-password" class="forgot-password">Forgot Password?</a>
-    <p>Don't have an account? <button (click)="goToRegister()" class="signup-link">Sign Up</button>
-    </p>
-  </div>
-        <div class="social-login">
-          <p>Or continue with</p>
-          <div class="social-buttons">
-            <button type="button" class="social-btn google">
-              <img src="google.jpg" alt="Google">
-              Google
-            </button>
-            <button type="button" class="social-btn facebook">
-              <img src="facebook.png" alt="Facebook">
-              Facebook
-            </button>
-          </div>
-        </div>
-      </form>
+  <div class="login-card">
+    <div class="header">
+      <h2>Welcome Back</h2>
+      <p>Please sign in to continue</p>
     </div>
+
+    @if (errorMessage) {
+      <div class="error-message">
+        {{ errorMessage }}
+      </div>
+    }
+
+    <form (ngSubmit)="login()" class="login-form">
+      <div class="form-group">
+        <input 
+          type="email" 
+          id="email" 
+          [(ngModel)]="user.email" 
+          name="email" 
+          required
+          class="form-input"
+          placeholder=" "
+        >
+        <label for="email" class="form-label">Email Address</label>
+        <span class="input-border"></span>
+      </div>
+
+      <div class="form-group">
+        <input 
+          type="password" 
+          id="password" 
+          [(ngModel)]="user.password" 
+          name="password" 
+          required 
+          minlength="6"
+          class="form-input"
+          placeholder=" "
+        >
+        <label for="password" class="form-label">Password</label>
+        <span class="input-border"></span>
+      </div>
+
+      <button type="submit" class="submit-btn" [disabled]="isLoading">
+        @if (isLoading) {
+          <span class="spinner"></span>
+        } @else {
+          Sign In
+        }
+      </button>
+
+      <div class="alternative-actions">
+        <a (click)="goToForgotPassword()" class="forgot-password">Forgot Password?</a>
+        <p>Don't have an account? 
+          <button type="button" (click)="goToRegister()" class="signup-link">Sign Up</button>
+        </p>
+      </div>
+
+      <div class="social-login">
+        <p>Or continue with</p>
+        <div class="social-buttons">
+          <button type="button" class="social-btn google">
+            <img src="assets/images/google.jpg" alt="Google">
+            Google
+          </button>
+          <button type="button" class="social-btn facebook">
+            <img src="assets/images/facebook.png" alt="Facebook">
+            Facebook
+          </button>
+        </div>
+      </div>
+    </form>
   </div>
+</div>

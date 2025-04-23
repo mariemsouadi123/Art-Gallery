@@ -1,0 +1,49 @@
+<div class="payment-history-container">
+    <h2>Your Payment History</h2>
+  
+    @if (isLoading) {
+      <div class="loading-spinner">
+        <mat-spinner [diameter]="40"></mat-spinner>      </div>
+    } @else if (error) {
+      <div class="error-message">
+        {{ error }}
+      </div>
+    } @else {
+      @if (payments.length === 0) {
+        <div class="empty-state">
+          <p>No payment history found</p>
+        </div>
+      } @else {
+        <div class="payment-list">
+          @for (payment of payments; track payment.id) {
+            <div class="payment-card">
+              <div class="artwork-info">
+                <img 
+                  [src]="payment.artwork.imageUrl" 
+                  [alt]="payment.artwork.title"
+                  class="artwork-image"
+                  (error)="handleImageError($event)"
+                >
+                <div class="artwork-details">
+                  <h3>{{ payment.artwork.title }}</h3>
+                  <p>By {{ payment.artwork.artist }}</p>
+                </div>
+              </div>
+  
+              <div class="payment-details">
+                <div class="payment-meta">
+                  <span class="amount">{{ payment.amount | currency:'EUR' }}</span>
+                  <span class="status" [class.success]="payment.status === 'completed'">
+                    {{ payment.status }}
+                  </span>
+                </div>
+                <p class="date">{{ formatDate(payment.date) }}</p>
+                <p class="transaction">Transaction: {{ payment.transactionId }}</p>
+                <p class="method">Method: {{ payment.paymentMethod }}</p>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    }
+  </div>

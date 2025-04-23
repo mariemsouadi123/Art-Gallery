@@ -1,0 +1,26 @@
+<div class="favorites-container">
+    <h1>Mes Œuvres Favorites</h1>
+    
+    @if (favoritesService.getFavorites().length === 0) {
+      <div class="empty-favorites">
+        <p>Vous n'avez aucune œuvre favorite pour le moment</p>
+        <a routerLink="/marketplace" class="browse-link">Parcourir la galerie</a>
+      </div>
+    } @else {
+      <div class="favorites-grid">
+        @for (artwork of favoritesService.getFavorites(); track artwork.id) {
+          <div class="favorite-item" [routerLink]="['/artwork', artwork.id]">
+            <img [src]="artwork.imageUrl" [alt]="artwork.title">
+            <div class="favorite-info">
+              <h3>{{ artwork.title }}</h3>
+              <p class="artist">{{ artwork.artistName }}</p>
+              <p class="price">{{ artwork.price | currency:'EUR':'symbol':'1.2-2' }}</p>
+            </div>
+            <button class="remove-favorite" (click)="removeFavorite(artwork.id, $event)">
+              ❌
+            </button>
+          </div>
+        }
+      </div>
+    }
+  </div>

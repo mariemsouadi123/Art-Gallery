@@ -1,0 +1,71 @@
+<!-- src/app/components/dashboard-home/dashboard-home.component.html -->
+<div class="dashboard-header mb-4">
+  <h2>Admin Dashboard</h2>
+  <p class="text-muted">Welcome back, {{ admin?.name || 'Admin' }}!</p>
+</div>
+
+@if (isLoading) {
+  <div class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p>Loading dashboard statistics...</p>
+  </div>
+} @else {
+  <div class="row mb-4">
+    <!-- Users Card -->
+    <div class="col-md-4">
+      <div class="card text-white bg-primary mb-3">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h5 class="card-title">Total Users</h5>
+              <h2 class="card-text">{{ stats.users }}</h2>
+            </div>
+            <i class="bi bi-people fs-1"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Artworks Card -->
+    <div class="col-md-4">
+      <div class="card text-white bg-success mb-3">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h5 class="card-title">Total Artworks</h5>
+              <h2 class="card-text">{{ stats.artworks }}</h2>
+            </div>
+            <i class="bi bi-palette fs-1"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Transactions Card -->
+    <div class="col-md-4">
+      <div class="card text-white bg-info mb-3">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h5 class="card-title">Total Transactions</h5>
+              <h2 class="card-text">{{ stats.transactions }}</h2>
+            </div>
+            <i class="bi bi-credit-card fs-1"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Activity Section -->
+  <div class="card">
+    <div class="card-header">
+      <h5>Recent Activity</h5>
+    </div>
+    <div class="card-body">
+      <p class="text-muted">Dashboard analytics coming soon...</p>
+    </div>
+  </div>
+}
