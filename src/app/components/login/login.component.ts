@@ -21,17 +21,20 @@ export class LoginComponent {
     private router: Router
   ) {}
 
-  login() {
+  login(event: Event) {
+    event.preventDefault();
     this.isLoading = true;
     this.errorMessage = '';
 
     this.authService.login(this.user).subscribe({
       next: (user) => {
         this.isLoading = false;
+        // Redirect based on user role
         if (user.role === 'ADMIN') {
           this.router.navigate(['/admin-dashboard']);
         } else {
-          this.router.navigate(['/user-home']);
+          // Force reload to ensure all data is fresh
+          window.location.href = '/user-home';
         }
       },
       error: (error) => {

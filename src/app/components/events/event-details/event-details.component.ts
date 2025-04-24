@@ -1,22 +1,28 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { CommonModule, DatePipe } from '@angular/common';
+import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { EventService } from '../../../services/event.service';
-import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService, User } from '../../../services/auth.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-event-details',
   templateUrl: './event-details.component.html',
   styleUrls: ['./event-details.component.css'],
   standalone: true,
-  imports: [CommonModule, RouterModule]
+  imports: [CommonModule, RouterModule, FormsModule, DatePipe]
 })
 export class EventDetailsComponent implements OnInit {
-  event: any;
+  event: any = null;
   loading = true;
-  currentUserId: number | null = null;
+  currentUser: User | null = null;
   isRegistered = false;
+  registrationError = '';
+  showRegistrationForm = false;
+  registrationData = {
+    attendees: 1,
+    specialRequirements: ''
+  };
 
   constructor(
     private eventService: EventService,
@@ -26,25 +32,14 @@ export class EventDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getCurrentUser();
-  }
-
-  getCurrentUser(): void {
-    this.authService.getCurrentUserObservable().subscribe({
-      next: (user: User | null) => {
-        if (user) {
-          this.currentUserId = user.id;
-          this.loadEvent();
-        } else {
-          this.currentUserId = null;
-          this.router.navigate(['/login']);
-        }
-      },
-      error: () => {
-        this.currentUserId = null;
-        this.router.navigate(['/login']);
-      }
-    });
+    this.currentUser = this.authService.getCurrentUser();
+    if (!this.currentUser) {
+      this.router.navigate(['/login'], { 
+        queryParams: { returnUrl: this.router.url }
+      });
+      return;
+    }
+    this.loadEvent();
   }
 
   loadEvent(): void {
@@ -55,36 +50,53 @@ export class EventDetailsComponent implements OnInit {
         this.checkRegistration();
         this.loading = false;
       },
-      error: () => {
+      error: (err) => {
+        console.error('Error loading event:', err);
         this.router.navigate(['/events']);
       }
     });
   }
 
   checkRegistration(): void {
-    if (this.currentUserId && this.event) {
-      this.eventService.getUserRegistrations(this.currentUserId).subscribe({
+    if (this.currentUser && this.event) {
+      this.eventService.getUserRegistrations(this.currentUser.id).subscribe({
         next: (registrations: any[]) => {
-          this.isRegistered = registrations.some((r: any) => r.event.id === this.event?.id);
+          this.isRegistered = registrations.some(r => r.event.id === this.event?.id);
+        },
+        error: (err) => {
+          console.error('Error checking registration:', err);
         }
       });
     }
   }
 
   registerForEvent(): void {
-    if (this.currentUserId && this.event) {
-      this.eventService.registerForEvent(this.event.id, this.currentUserId)
-        .subscribe({
-          next: () => {
-            this.isRegistered = true;
-            this.router.navigate(['/events', this.event.id, 'ticket'], {
-              queryParams: { refresh: new Date().getTime() }
-            });
-          },
-          error: (err) => {
-            console.error('Registration error:', err);
-          }
+    if (!this.currentUser || !this.event) return;
+
+    this.registrationError = '';
+    const registrationPayload = {
+      eventId: this.event.id,
+      userId: this.currentUser.id,
+      attendees: this.registrationData.attendees,
+      specialRequirements: this.registrationData.specialRequirements
+    };
+
+    this.eventService.registerForEvent(registrationPayload).subscribe({
+      next: () => {
+        this.isRegistered = true;
+        this.showRegistrationForm = false;
+        this.router.navigate(['/events', this.event.id, 'ticket'], {
+          queryParams: { refresh: Date.now() }
         });
-    }
+      },
+      error: (err) => {
+        console.error('Registration error:', err);
+        this.registrationError = err.error?.message || 'Registration failed. Please try again.';
+      }
+    });
+  }
+
+  toggleRegistrationForm(): void {
+    this.showRegistrationForm = !this.showRegistrationForm;
   }
 }

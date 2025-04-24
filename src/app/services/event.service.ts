@@ -14,6 +14,10 @@ export class EventService {
     return this.http.get<any[]>(this.apiUrl);
   }
 
+  getTicket(eventId: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${eventId}/ticket`);
+  }
+
   // In event.service.ts
   getUpcomingEvents(): Observable<any[]> {
   return this.http.get<any[]>(`${this.apiUrl}/upcoming?testData=true`); // Temporary for testing
@@ -35,12 +39,13 @@ export class EventService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  registerForEvent(eventId: number, userId: number): Observable<any> {
-    return this.http.post<any>(
-      `${this.apiUrl}/${eventId}/register/${userId}`, 
-      {},
-      { observe: 'response' } // Get full response
-    );
+  registerForEvent(payload: {
+    eventId: number;
+    userId: number;
+    attendees?: number;
+    specialRequirements?: string;
+  }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/events/${payload.eventId}/register`, payload);
   }
 
   getUserRegistrations(userId: number): Observable<any[]> {

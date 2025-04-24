@@ -1,16 +1,26 @@
-<p>event-details works!</p>
-<div class="container mt-4" *ngIf="!loading && event">
+<div class="container mt-4">
+  <!-- Loading state -->
+  <div *ngIf="loading" class="text-center my-5">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <!-- Event details -->
+  <div *ngIf="!loading && event" class="event-details">
     <div class="row">
       <div class="col-md-6">
         <img [src]="event.imageUrl || 'assets/default-event.jpg'" 
-             class="img-fluid rounded mb-3" 
-             [alt]="event.title">
+             class="img-fluid rounded mb-3 event-image" 
+             [alt]="event.title"
+             (error)="event.imageUrl = 'assets/default-event.jpg'">
       </div>
+      
       <div class="col-md-6">
-        <h1>{{ event.title }}</h1>
-        <p class="lead">{{ event.description }}</p>
+        <h1 class="event-title">{{ event.title }}</h1>
+        <p class="event-description">{{ event.description }}</p>
         
-        <div class="card mb-4">
+        <div class="event-info card mb-4">
           <div class="card-body">
             <h5 class="card-title">Event Details</h5>
             <ul class="list-group list-group-flush">
@@ -29,41 +39,69 @@
               <li class="list-group-item" *ngIf="event.onlineUrl">
                 <i class="bi bi-link-45deg me-2"></i>
                 <strong>Join Online:</strong> 
-                <a [href]="event.onlineUrl" target="_blank">Click here</a>
+                <a [href]="event.onlineUrl" target="_blank">{{ event.onlineUrl }}</a>
               </li>
               <li class="list-group-item">
                 <i class="bi bi-tag me-2"></i>
-                <strong>Price:</strong> {{ event.price | currency }}
+                <strong>Price:</strong> {{ event.price | currency:'USD':'symbol':'1.2-2' }}
               </li>
               <li class="list-group-item" *ngIf="event.capacity">
                 <i class="bi bi-people me-2"></i>
-                <strong>Capacity:</strong> {{ event.capacity }} spots available
+                <strong>Seats Available:</strong> {{ event.capacity - (event.registrationsCount || 0) }}
               </li>
             </ul>
           </div>
         </div>
-  
-        <div class="d-flex gap-2">
-          <button *ngIf="currentUserId && !isRegistered"
-                  (click)="registerForEvent()"
-                  class="btn btn-primary">
-            Register Now
-          </button>
-          <a *ngIf="currentUserId && isRegistered"
-             [routerLink]="['/events', event.id, 'ticket']"
-             class="btn btn-success">
-            View Your Ticket
-          </a>
-          <a routerLink="/events" class="btn btn-outline-secondary ms-auto">
+
+        <!-- Registration form -->
+        <div *ngIf="showRegistrationForm" class="registration-form card mb-4">
+          <div class="card-body">
+            <h5 class="card-title">Register for Event</h5>
+            <form (ngSubmit)="registerForEvent()">
+              <div class="mb-3">
+                <label for="attendees" class="form-label">Number of Attendees</label>
+                <input type="number" class="form-control" id="attendees" 
+                       [(ngModel)]="registrationData.attendees" name="attendees"
+                       min="1" [max]="event.capacity - (event.registrationsCount || 0)" required>
+              </div>
+              <div class="mb-3">
+                <label for="requirements" class="form-label">Special Requirements</label>
+                <textarea class="form-control" id="requirements" 
+                          [(ngModel)]="registrationData.specialRequirements" name="specialRequirements"
+                          rows="3"></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Complete Registration</button>
+              <button type="button" class="btn btn-outline-secondary ms-2" 
+                      (click)="toggleRegistrationForm()">Cancel</button>
+            </form>
+            <div *ngIf="registrationError" class="alert alert-danger mt-3">
+              {{ registrationError }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Action buttons -->
+        <div class="event-actions">
+          <button *ngIf="currentUser?.id && !isRegistered && !showRegistrationForm"
+        (click)="toggleRegistrationForm()"
+        class="btn btn-primary btn-lg">
+  Register Now
+</button>
+<a *ngIf="currentUser?.id && isRegistered"
+   [routerLink]="['/events', event.id, 'ticket']"
+   class="btn btn-success btn-lg">
+  View Your Ticket
+</a>
+          <a routerLink="/events" class="btn btn-outline-secondary ms-2">
             Back to Events
           </a>
         </div>
       </div>
     </div>
   </div>
-  
-  <div *ngIf="loading" class="text-center my-5">
-    <div class="spinner-border" role="status">
-      <span class="visually-hidden">Loading...</span>
-    </div>
+
+  <!-- Error state -->
+  <div *ngIf="!loading && !event" class="alert alert-danger text-center">
+    Event not found. <a routerLink="/events">Browse all events</a>
   </div>
+</div>
