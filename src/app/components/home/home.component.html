@@ -1,1 +1,162 @@
-<p>home works!</p>
+<div class="art-gallery-container">
+  <!-- Background Image with Blur -->
+  <div class="background-image"></div>
+  
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">
+      <span>ArtyVinci</span>
+    </div>
+    <ul class="nav-links">
+      <li><a routerLink="/" routerLinkActive="active">Home</a></li>
+      <li><a routerLink="/about" routerLinkActive="active">About</a></li>
+      <li><a routerLink="/exhibitions" routerLinkActive="active">Marketplace</a></li>
+      <li><a routerLink="/artists" routerLinkActive="active">Artists</a></li>
+      <li><a routerLink="/contact" routerLinkActive="active">Contact</a></li>
+      <li><a routerLink="/login" routerLinkActive="active" class="login-btn">Login</a></li>
+    </ul>
+  </nav>
+  <!-- Hero Content -->
+  <div class="hero-content">
+    <div class="text-content animate-text">
+      <h1>Discover <span>Exceptional</span> Art</h1>
+      <h2>Where Creativity Meets Passion</h2>
+      <p>Explore our curated collection of contemporary artworks from emerging and established artists worldwide. Find pieces that inspire and transform spaces.</p>
+      <div class="cta-buttons">
+        <a routerLink="/exhibitions" class="explore-btn">Explore Collection</a>
+        <a routerLink="/artists" class="artist-btn">Meet the Artists</a>
+      </div>
+    </div>
+    <div class="image-content animate-image">
+      <img src="/image.jpg" class="hero-image">
+    </div>
+  </div>
+
+  <!-- Featured Artists Section -->
+  <section class="artists-section">
+    <div class="section-header">
+      <h2>Featured Artists</h2>
+      <div class="divider"></div>
+    </div>
+    
+    <div class="artists-scroll-container">
+      <div class="artists-horizontal-scroll" #artistsScroll>
+        <div class="artist-card" *ngFor="let artist of artists" @fadeInUp>
+          <div class="artist-img-container">
+            <img [src]="artist.image" [alt]="artist.name" class="artist-img">
+            <div class="social-links">
+              <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+              <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            </div>
+          </div>
+          <div class="artist-info">
+            <h3>{{artist.name}}</h3>
+            <p>{{artist.style}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="scroll-controls">
+      <button class="scroll-btn left-scroll" (click)="scrollLeft()">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <button class="scroll-btn right-scroll" (click)="scrollRight()">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+  </section>
+
+  <!-- Reviews Section -->
+  <section class="reviews-section">
+    <div class="section-header">
+      <h2>Client Experiences</h2>
+      <div class="divider"></div>
+      <p class="section-subtitle">What our collectors say about us</p>
+    </div>
+    
+    <div class="reviews-scroll-container">
+      <div class="reviews-horizontal-scroll" #reviewsScroll>
+        <div class="review-card" *ngFor="let review of reviews" @fadeInSlide>
+          <div class="review-header">
+            <div class="client-avatar">
+              <img [src]="review.image" [alt]="review.name">
+            </div>
+            <div class="client-info">
+              <h3>{{review.name}}</h3>
+              <p class="client-location">{{review.location}}</p>
+            </div>
+          </div>
+          
+          <div class="review-rating">
+            <div class="stars">
+              <span *ngFor="let star of [1,2,3,4,5]" 
+                    [class.filled]="star <= getStarRating(review.rating)" 
+                    [class.half]="hasHalfStar(review.rating) && star === getStarRating(review.rating) + 1">
+                <i class="fas fa-star"></i>
+              </span>
+            </div>
+            <span class="rating-value">{{review.rating.toFixed(1)}}</span>
+          </div>
+          
+          <p class="review-text">{{review.text}}</p>
+          
+          <div class="review-date">
+            <i class="far fa-calendar-alt"></i>
+            <span>{{review.date}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="scroll-controls">
+      <button class="scroll-btn left-scroll" (click)="scrollReviewsLeft()">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <button class="scroll-btn right-scroll" (click)="scrollReviewsRight()">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+  </section>
+
+  <!-- Footer Section -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-section about">
+        <h3>About Art Gallery</h3>
+        <p>Discover exceptional art from emerging and established artists worldwide. Our gallery is dedicated to bringing creativity and passion to art lovers everywhere.</p>
+        <div class="social-icons">
+          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+          <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-section links">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a routerLink="">Home</a></li>
+          <li><a routerLink="/about">About Us</a></li>
+          <li><a routerLink="/artists">Artists</a></li>
+          <li><a routerLink="/exhibitions">Marketplace</a></li>
+          <li><a routerLink="/contact">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section contact">
+        <h3>Contact Info</h3>
+        <ul>
+          <li><i class="fas fa-map-marker-alt"></i> 123 Art Street, Creative City</li>
+          <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+          <li><i class="fas fa-envelope"></i> info.artgallery.com</li>
+          <li><i class="fas fa-clock"></i> Mon-Sat: 10:00 AM - 6:00 PM</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2025 Art Gallery. All rights reserved. | Designed with <i class="fas fa-heart"></i> by Art Gallery Team</p>
+    </div>
+  </footer>
+</div>

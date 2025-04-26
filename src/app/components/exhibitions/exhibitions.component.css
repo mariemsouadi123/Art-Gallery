@@ -1,0 +1,412 @@
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 5%;
+    background: linear-gradient(135deg, rgba(24, 59, 78, 0.9) 0%, rgba(39, 84, 138, 0.95) 100%);
+    backdrop-filter: blur(10px);
+    position: fixed;
+    width: 100%;
+    z-index: 100;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    animation: fadeInDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  
+  .navbar-brand {
+    font-size: 28px;
+    font-weight: 700;
+    color: #F5EEDC;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .navbar-links {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+  }
+  
+  .nav-link {
+    color: #F5EEDC;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+  
+  .nav-link:hover,
+  .nav-link.active {
+    color: #DDA853;
+    background: rgba(221, 168, 83, 0.1);
+  }
+  
+  .nav-link.active::after {
+    content: '';
+    display: block;
+    width: 60%;
+    height: 2px;
+    background: #DDA853;
+    margin: 5px auto 0;
+    border-radius: 2px;
+  }
+  
+  /* Exhibitions Container */
+  .exhibitions-container {
+    padding: 120px 5% 60px;
+    background: linear-gradient(135deg, rgba(245, 238, 220, 0.98) 0%, rgba(221, 168, 83, 0.15) 100%);
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .exhibitions-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 30% 70%, rgba(39, 84, 138, 0.1) 0%, transparent 50%);
+    z-index: 0;
+  }
+  
+  .section-header {
+    text-align: center;
+    margin-bottom: 4rem;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .section-header h1 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: #183B4E;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    animation: fadeIn 0.8s ease both;
+  }
+  
+  .divider {
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(90deg, #DDA853, rgba(221, 168, 83, 0.5));
+    margin: 1.5rem auto;
+    border-radius: 4px;
+    animation: scaleIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both 0.3s;
+  }
+  
+  .section-subtitle {
+    color: #27548A;
+    font-size: 1.2rem;
+    font-weight: 500;
+    opacity: 0.9;
+    animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both 0.5s;
+  }
+  
+  /* Artworks List */
+  .artworks-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .artwork-item {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(245, 238, 220, 0.9) 100%);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(24, 59, 78, 0.15);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    border: 1px solid rgba(221, 168, 83, 0.2);
+  }
+  
+  .artwork-item:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 50px rgba(24, 59, 78, 0.2);
+  }
+  
+  .artwork-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(221, 168, 83, 0.15) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  
+  .artwork-item:hover::before {
+    opacity: 1;
+  }
+  
+  .artwork-image-container {
+    position: relative;
+    height: 300px;
+    overflow: hidden;
+  }
+  
+  .artwork-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  .artwork-item:hover .artwork-image {
+    transform: scale(1.05);
+  }
+  
+  .favorite-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(24, 59, 78, 0.8);
+    border: none;
+    color: #F5EEDC;
+    font-size: 1.2rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  .favorite-btn.active {
+    background: #DDA853;
+    color: #183B4E;
+  }
+  
+  .favorite-btn:hover {
+    transform: scale(1.1);
+    background: #DDA853;
+  }
+  
+  .artwork-info {
+    padding: 1.5rem;
+    text-align: left;
+  }
+  
+  .artwork-info h3 {
+    font-size: 1.5rem;
+    color: #183B4E;
+    margin: 0 0 0.5rem;
+    font-weight: 700;
+    transition: color 0.3s ease;
+  }
+  
+  .artwork-item:hover .artwork-info h3 {
+    color: #27548A;
+  }
+  
+  .artist {
+    color: #27548A;
+    font-size: 1rem;
+    margin: 0 0 0.5rem;
+    opacity: 0.9;
+  }
+  
+  .price {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #DDA853;
+    margin: 0 0 0.5rem;
+  }
+  
+  .description {
+    font-size: 0.95rem;
+    color: #183B4E;
+    line-height: 1.6;
+    margin: 0 0 1rem;
+    opacity: 0.9;
+  }
+  
+  .artwork-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
+  
+  .action-btn {
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    border: none;
+  }
+  
+  .add-to-cart {
+    background: linear-gradient(135deg, #DDA853 0%, #c09547 100%);
+    color: #F5EEDC;
+  }
+  
+  .add-to-cart:hover {
+    background: linear-gradient(135deg, #c09547 0%, #DDA853 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(221, 168, 83, 0.4);
+  }
+  
+  .view-details {
+    background: transparent;
+    color: #27548A;
+    border: 2px solid #27548A;
+  }
+  
+  .view-details:hover {
+    background: rgba(39, 84, 138, 0.1);
+    color: #183B4E;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(24, 59, 78, 0.2);
+  }
+  
+  /* Loading Spinner */
+  .loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+  }
+  
+  .spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #F5EEDC;
+    border-top: 5px solid #DDA853;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  /* Error Message */
+  .error-message {
+    text-align: center;
+    color: #183B4E;
+    padding: 20px;
+    background: rgba(245, 238, 220, 0.9);
+    border-radius: 10px;
+    margin: 20px auto;
+    max-width: 600px;
+  }
+  
+  .error-message button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background: #DDA853;
+    color: #F5EEDC;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .error-message button:hover {
+    background: #c09547;
+    transform: translateY(-3px);
+  }
+  
+  /* Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes scaleIn {
+    from {
+      transform: scaleX(0);
+      opacity: 0;
+    }
+    to {
+      transform: scaleX(1);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 992px) {
+    .artworks-list {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+    
+    .exhibitions-container {
+      padding: 100px 3% 40px;
+    }
+    
+    .section-header h1 {
+      font-size: 2.2rem;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .navbar {
+      flex-direction: column;
+      gap: 15px;
+      padding: 15px;
+    }
+    
+    .navbar-links {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+    }
+    
+    .artwork-item {
+      margin: 0 auto;
+    }
+    
+    .artwork-actions {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .action-btn {
+      width: 100%;
+      text-align: center;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .artworks-list {
+      grid-template-columns: 1fr;
+    }
+    
+    .artwork-image-container {
+      height: 250px;
+    }
+    
+    .artwork-info h3 {
+      font-size: 1.3rem;
+    }
+    
+    .section-header h1 {
+      font-size: 1.8rem;
+    }
+    
+    .section-subtitle {
+      font-size: 1rem;
+    }
+  }

@@ -1,12 +1,12 @@
 <div class="login-container">
-  <div class="login-card">
+  <div class="login-card" @fadeInUp>
     <div class="header">
       <h2>Welcome Back</h2>
       <p>Please sign in to continue</p>
     </div>
 
     @if (errorMessage) {
-      <div class="error-message">
+      <div class="error-message" @shake>
         {{ errorMessage }}
       </div>
     }
@@ -60,11 +60,11 @@
         <p>Or continue with</p>
         <div class="social-buttons">
           <button type="button" class="social-btn google">
-            <img src="assets/images/google.jpg" alt="Google">
+            <img src="/google.png" alt="Google">
             Google
           </button>
           <button type="button" class="social-btn facebook">
-            <img src="assets/images/facebook.png" alt="Facebook">
+            <img src="/facebook.png" alt="Facebook">
             Facebook
           </button>
         </div>

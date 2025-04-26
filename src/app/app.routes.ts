@@ -12,17 +12,21 @@ import { UserManagementComponent } from './components/user-management/user-manag
 import { DashboardHomeComponent } from './components/dashboard-home/dashboard-home.component';
 import { ArtworkManagementComponent } from './components/artwork-management/artwork-management.component';
 import { PaymentManagementComponent } from './components/payment-management/payment-management.component';
+<<<<<<< HEAD
 import { ExhibitionsComponent } from './components/exhibitions/exhibitions.component';
+=======
 import { authGuard } from './services/auth.guard.service';
 import { EventListComponent } from './components/events/event-list/event-list.component';
 import { EventDetailsComponent } from './components/events/event-details/event-details.component';
 import { EventFormComponent } from './components/events/event-form/event-form.component';
 import { EventTicketComponent } from './components/events/event-ticket/event-ticket.component';
+>>>>>>> 546906f390176a66deef56f60574fca9f9ce18cf
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
+<<<<<<< HEAD
   { path: 'user-home', component: UserHomeComponent },
   { path: 'marketplace', component: MarketplaceComponent },
   { path: 'checkout', component: CheckoutComponent },
@@ -30,6 +34,7 @@ export const routes: Routes = [
   { path: 'user-profile', component: UserProfileComponent },
   { path: 'exhibitions', component: ExhibitionsComponent },  
   // Admin routes with nested children - using 'admin-dashboard' as base path
+=======
   
   // User routes
   { 
@@ -76,6 +81,9 @@ export const routes: Routes = [
     canActivate: [authGuard],
     data: { role: 'USER' }
   },
+  
+  // Admin routes
+>>>>>>> 546906f390176a66deef56f60574fca9f9ce18cf
   { 
     path: 'admin-dashboard', 
     component: AdminDashboardComponent,
