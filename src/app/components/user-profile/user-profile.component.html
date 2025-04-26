@@ -1,84 +1,82 @@
-<div class="profile-container">
-  <div class="profile-header">
-    <h2>Your Profile</h2>
-    <button class="btn btn-logout" (click)="logout()">Logout</button>
-  </div>
+<div class="profile-page-container">
+  <button class="back-button" (click)="navigateToDashboard()">
+    ← Back to Dashboard
+  </button>
 
-  <div *ngIf="isLoading" class="loading-spinner">
-    Loading profile...
-  </div>
-
-  <div *ngIf="errorMessage" class="alert alert-danger">
-    {{ errorMessage }}
-  </div>
-
-  <div *ngIf="successMessage" class="alert alert-success">
-    {{ successMessage }}
-  </div>
-
-  <div *ngIf="user && !isLoading" class="profile-content">
-    <div class="profile-image-section">
-      <img [src]="previewImage || 'assets/default-profile.jpg'" alt="Profile Image" class="profile-image">
-      <div *ngIf="isEditing" class="image-upload">
-        <input type="file" id="profileImage" (change)="onFileSelected($event)" accept="image/*" class="file-input">
-        <label for="profileImage" class="btn btn-upload">Change Profile Picture</label>
-      </div>
+  <div class="profile-container">
+    <div class="profile-header">
+      <h2 class="profile-title">Your <span>Artistic</span> Profile</h2>
+      <button class="btn-logout" (click)="logout()">Logout</button>
     </div>
 
-    <form *ngIf="isEditing; else viewMode" [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="profile-form">
-      <div class="form-group">
-        <label for="fullName">Full Name</label>
-        <input id="fullName" type="text" formControlName="fullName" class="form-control">
-        <div *ngIf="profileForm.get('fullName')?.invalid && profileForm.get('fullName')?.touched" class="error-message">
-          Full name is required
-        </div>
-      </div>
+    <div *ngIf="isLoading" class="loading-message">
+      <div class="spinner"></div>
+      <p>Preparing your palette...</p>
+    </div>
 
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input id="email" type="email" formControlName="email" class="form-control">
-        <div *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched" class="error-message">
-          Please enter a valid email
-        </div>
-      </div>
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
 
-      <div class="form-group">
-        <label for="phone">Phone Number</label>
-        <input id="phone" type="tel" formControlName="phone" class="form-control">
-      </div>
+    <div *ngIf="successMessage" class="alert alert-success">
+      {{ successMessage }}
+    </div>
 
-      <div class="form-group">
-        <label for="address">Address</label>
-        <textarea id="address" formControlName="address" class="form-control" rows="3"></textarea>
-      </div>
+    <div *ngIf="user && !isLoading" class="profile-content">
+      <form *ngIf="isEditing; else viewMode" [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="profile-form">
+        <div class="form-group">
+          <label for="fullName">Full Name</label>
+          <input id="fullName" type="text" formControlName="fullName" class="form-control">
+          <div *ngIf="profileForm.get('fullName')?.invalid && profileForm.get('fullName')?.touched" class="error-message">
+            Full name is required
+          </div>
+        </div>
 
-      <div class="form-actions">
-        <button type="submit" [disabled]="profileForm.invalid" class="btn btn-primary">Save Changes</button>
-        <button type="button" (click)="toggleEdit()" class="btn btn-secondary">Cancel</button>
-      </div>
-    </form>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input id="email" type="email" formControlName="email" class="form-control">
+          <div *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched" class="error-message">
+            Please enter a valid email
+          </div>
+        </div>
 
-    <ng-template #viewMode>
-      <div class="profile-info">
-        <div class="info-item">
-          <span class="info-label">Full Name:</span>
-          <span class="info-value">{{ user.fullName }}</span>
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input id="phone" type="tel" formControlName="phone" class="form-control">
         </div>
-        <div class="info-item">
-          <span class="info-label">Email:</span>
-          <span class="info-value">{{ user.email }}</span>
+
+        <div class="form-group">
+          <label for="address">Address</label>
+          <textarea id="address" formControlName="address" class="form-control" rows="3"></textarea>
         </div>
-        <div class="info-item" *ngIf="user.phone">
-          <span class="info-label">Phone:</span>
-          <span class="info-value">{{ user.phone }}</span>
+
+        <div class="form-actions">
+          <button type="submit" [disabled]="profileForm.invalid" class="btn-primary">Save Changes</button>
+          <button type="button" (click)="toggleEdit()" class="btn-secondary">Cancel</button>
         </div>
-        <div class="info-item" *ngIf="user.address">
-          <span class="info-label">Address:</span>
-          <span class="info-value">{{ user.address }}</span>
+      </form>
+
+      <ng-template #viewMode>
+        <div class="profile-info">
+          <div class="info-item">
+            <span class="info-label">Full Name:</span>
+            <span class="info-value">{{ user.fullName }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Email:</span>
+            <span class="info-value">{{ user.email }}</span>
+          </div>
+          <div class="info-item" *ngIf="user.phone">
+            <span class="info-label">Phone:</span>
+            <span class="info-value">{{ user.phone }}</span>
+          </div>
+          <div class="info-item" *ngIf="user.address">
+            <span class="info-label">Address:</span>
+            <span class="info-value">{{ user.address }}</span>
+          </div>
         </div>
-       
-      </div>
-      <button (click)="toggleEdit()" class="btn btn-edit">Edit Profile</button>
-    </ng-template>
+        <button (click)="toggleEdit()" class="btn-edit">Edit Profile</button>
+      </ng-template>
+    </div>
   </div>
 </div>

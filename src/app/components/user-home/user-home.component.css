@@ -1,63 +1,285 @@
-/* navbar.component.css */
+/* Base Styles */
+:host {
+  display: block;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #F5EEDC 0%, #F1CA89 100%);
+  font-family: 'Cormorant Garamond', 'Playfair Display', serif;
+}
+
+/* Navbar Styles */
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
-    background-color: #2c3e50;
-    color: white;
-  }
-  
-  .navbar-brand {
-    font-size: 1.5rem;
-    font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 3rem;
+  background: linear-gradient(135deg, #183B4E 0%, #27548A 100%);
+  color: #F5EEDC;
+  box-shadow: 0 4px 20px rgba(24, 59, 78, 0.2);
+}
+
+.navbar-brand {
+  font-size: 2rem;
+  font-weight: 700;
+  font-family: 'Dancing Script', cursive;
+  letter-spacing: 1px;
+  color: #DDA853;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.nav-link {
+  color: #F5EEDC;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 30px;
+  transition: all 0.3s ease;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.nav-link:hover, .nav-link.active {
+  background: rgba(221, 168, 83, 0.2);
+  color: #F1CA89;
+}
+
+.logout-btn {
+  background: linear-gradient(135deg, #CC9B6D, #DDA853);
+  color: #183B4E;
+  border: none;
+  padding: 0.7rem 1.5rem;
+  border-radius: 30px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.logout-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(221, 168, 83, 0.4);
+}
+
+/* Main Content Styles */
+.user-home-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.welcome-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(24, 59, 78, 0.1);
+}
+
+.welcome-content {
+  flex: 1;
+}
+
+.welcome-title {
+  font-size: 2.5rem;
+  color: #183B4E;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.welcome-title span {
+  color: #DDA853;
+  font-family: 'Dancing Script', cursive;
+}
+
+.welcome-subtitle {
+  font-size: 1.3rem;
+  color: #27548A;
+  font-style: italic;
+}
+
+.profile-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 5px solid #F1CA89;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  margin-left: 2rem;
+}
+
+/* Purchases Section */
+.section-title {
+  font-size: 2rem;
+  color: #183B4E;
+  text-align: center;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.section-title span {
+  color: #DDA853;
+  font-family: 'Dancing Script', cursive;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(90deg, #DDA853, #CC9B6D);
+}
+
+.purchases-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.purchase-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(24, 59, 78, 0.1);
+  transition: all 0.3s ease;
+}
+
+.purchase-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 40px rgba(24, 59, 78, 0.2);
+}
+
+.card-header {
+  height: 150px;
+  background: linear-gradient(135deg, #F1CA89, #DDA853);
+}
+
+.card-content {
+  padding: 1.5rem;
+}
+
+.purchase-card h3 {
+  font-size: 1.3rem;
+  color: #183B4E;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.purchase-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price {
+  font-weight: 700;
+  color: #27548A;
+  font-size: 1.1rem;
+}
+
+.date {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* Empty State */
+.no-purchases {
+  text-align: center;
+  padding: 3rem;
+}
+
+.empty-state {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.empty-icon {
+  width: 120px;
+  opacity: 0.7;
+  margin-bottom: 1.5rem;
+}
+
+.empty-state h3 {
+  font-size: 1.8rem;
+  color: #183B4E;
+  margin-bottom: 0.5rem;
+  font-family: 'Playfair Display', serif;
+}
+
+.empty-state p {
+  color: #666;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+.browse-btn {
+  display: inline-block;
+  padding: 0.8rem 2rem;
+  background: linear-gradient(135deg, #27548A, #183B4E);
+  color: white;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.browse-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(39, 84, 138, 0.3);
+}
+
+/* Loading State */
+.loading-message {
+  text-align: center;
+  padding: 3rem;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(221, 168, 83, 0.3);
+  border-radius: 50%;
+  border-top-color: #DDA853;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    padding: 1rem;
   }
   
   .navbar-links {
-    display: flex;
-    gap: 1.5rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
   }
   
-  .nav-link {
-    color: white;
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-  }
-  
-  .nav-link:hover {
-    background-color: #34495e;
-  }
-
-  /* Ajoutez ces styles à votre fichier CSS existant */
-.logout-btn {
-    background-color: #f44336;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    margin-left: auto; /* Pour pousser le bouton à droite */
-    transition: background-color 0.3s;
-  }
-  
-  .logout-btn:hover {
-    background-color: #d32f2f;
-  }
-  
-.user-home-container {
-    padding: 2rem;
+  .welcome-section {
+    flex-direction: column-reverse;
     text-align: center;
   }
   
-  h1 {
-    color: #2c3e50;
-    margin-bottom: 1rem;
+  .profile-image {
+    margin: 0 auto 1.5rem;
   }
   
-  p {
-    color: #7f8c8d;
-    font-size: 1.1rem;
+  .welcome-title {
+    font-size: 2rem;
   }
+}

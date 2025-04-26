@@ -155,5 +155,8 @@ export class UserProfileComponent implements OnInit {
       }
     });
   }
+  navigateToDashboard() {
+    this.router.navigate(['/user-home']);
+  }
 }
 

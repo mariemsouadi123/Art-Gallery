@@ -6,7 +6,7 @@ import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
 import { ArtworkService } from '../../services/artwork.service';
 import { PaymentService } from '../../services/payment.service';
-import { User } from '../../interfaces/user.interface';
+
 
 interface AdminStats {
   users: number;

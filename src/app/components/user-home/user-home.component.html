@@ -1,42 +1,57 @@
-<nav class="navbar">
-    <div class="navbar-brand">ArtyVinci</div>
-    <div class="navbar-links">
-      <a routerLink="/user-home" class="nav-link">Home</a>
-      <a routerLink="/events" class="nav-link">Events</a>
-      <a routerLink="/marketplace" class="nav-link">Exhibitions</a>
-      <a routerLink="/user-profile" class="nav-link">Profile</a>
-      <a routerLink="/favorites" class="nav-link">Favorites</a>
-      <button (click)="logout()" class="logout-btn">Logout</button>
-    </div>
-  </nav>
-  
-  <div class="user-home-container">
-    <div class="welcome-section">
-        <h1>Welcome, {{ fullName }}!</h1>
-        <img [src]="userImage" alt="Profile Image" class="profile-image">
-    </div>
-  
-    @if (isLoading) {
-        <div class="loading-message">Loading your purchases...</div>
-    } @else {
+<div class="dashboard-container">
+    <nav class="navbar">
+      <div class="navbar-brand">ArtyVinci</div>
+      <div class="navbar-links">
+        <a routerLink="/user-home" class="nav-link active">Home</a>
+        <a routerLink="/events" class="nav-link">Events</a>
+        <a routerLink="/marketplace" class="nav-link">Exhibitions</a>
+        <a routerLink="/user-profile" class="nav-link">Profile</a>
+        <a routerLink="/favorites" class="nav-link">Favorites</a>
+        <button (click)="logout()" class="logout-btn">Logout</button>
+      </div>
+    </nav>
+    
+    <div class="user-home-container">
+      <div class="welcome-section">
+        <div class="welcome-content">
+          <h1 class="welcome-title">Welcome Back, <span>{{ fullName }}</span>!</h1>
+          <p class="welcome-subtitle">Your artistic journey continues...</p>
+        </div>
+      </div>
+    
+      @if (isLoading) {
+        <div class="loading-message">
+          <div class="spinner"></div>
+          <p>Curating your collection...</p>
+        </div>
+      } @else {
         @if (purchases.length > 0) {
-            <div class="purchases-section">
-                <h2>Your Recent Purchases</h2>
-                <div class="purchases-list">
-                    @for (purchase of purchases; track purchase.artworkId) {
-                        <div class="purchase-card">
-                            <h3>{{ purchase.title }}</h3>
-                            <p>Amount: {{ purchase.amount | currency:'EUR':'symbol':'1.2-2' }}</p>
-                            <p>Date: {{ purchase.date | date:'mediumDate' }}</p>
-                        </div>
-                    }
+          <div class="purchases-section">
+            <h2 class="section-title">Your Recent <span>Masterpieces</span></h2>
+            <div class="purchases-grid">
+              @for (purchase of purchases; track purchase.artworkId) {
+                <div class="purchase-card">
+                  <div class="card-header"></div>
+                  <div class="card-content">
+                    <h3>{{ purchase.title }}</h3>
+                    <div class="purchase-details">
+                      <p class="price">{{ purchase.amount | currency:'EUR':'symbol':'1.2-2' }}</p>
+                      <p class="date">{{ purchase.date | date:'mediumDate' }}</p>
+                    </div>
+                  </div>
                 </div>
+              }
             </div>
+          </div>
         } @else {
-            <div class="no-purchases">
-                <p>You haven't made any purchases yet.</p>
-                <a routerLink="/marketplace" class="btn btn-primary">Browse Artworks</a>
+          <div class="no-purchases">
+            <div class="empty-state">
+              <h3>Your Collection Awaits</h3>
+              <p>No purchases yet to display</p>
+              <a routerLink="/marketplace" class="browse-btn">Discover Artworks</a>
             </div>
+          </div>
         }
-    }
+      }
+    </div>
   </div>
