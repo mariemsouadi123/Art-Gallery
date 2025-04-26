@@ -26,7 +26,7 @@
             <ul class="list-group list-group-flush">
               <li class="list-group-item">
                 <i class="bi bi-calendar-event me-2"></i>
-                <strong>Date:</strong> {{ event.startDate | date:'fullDate' }}
+                <strong>Date:</strong> {{ event.startDate | date:'medium' }}
               </li>
               <li class="list-group-item">
                 <i class="bi bi-clock me-2"></i>
@@ -53,45 +53,23 @@
           </div>
         </div>
 
-        <!-- Registration form -->
-        <div *ngIf="showRegistrationForm" class="registration-form card mb-4">
-          <div class="card-body">
-            <h5 class="card-title">Register for Event</h5>
-            <form (ngSubmit)="registerForEvent()">
-              <div class="mb-3">
-                <label for="attendees" class="form-label">Number of Attendees</label>
-                <input type="number" class="form-control" id="attendees" 
-                       [(ngModel)]="registrationData.attendees" name="attendees"
-                       min="1" [max]="event.capacity - (event.registrationsCount || 0)" required>
-              </div>
-              <div class="mb-3">
-                <label for="requirements" class="form-label">Special Requirements</label>
-                <textarea class="form-control" id="requirements" 
-                          [(ngModel)]="registrationData.specialRequirements" name="specialRequirements"
-                          rows="3"></textarea>
-              </div>
-              <button type="submit" class="btn btn-primary">Complete Registration</button>
-              <button type="button" class="btn btn-outline-secondary ms-2" 
-                      (click)="toggleRegistrationForm()">Cancel</button>
-            </form>
-            <div *ngIf="registrationError" class="alert alert-danger mt-3">
-              {{ registrationError }}
-            </div>
-          </div>
+        <!-- Error message -->
+        <div *ngIf="registrationError" class="alert alert-danger mb-4">
+          {{ registrationError }}
         </div>
 
         <!-- Action buttons -->
         <div class="event-actions">
-          <button *ngIf="currentUser?.id && !isRegistered && !showRegistrationForm"
-        (click)="toggleRegistrationForm()"
-        class="btn btn-primary btn-lg">
-  Register Now
-</button>
-<a *ngIf="currentUser?.id && isRegistered"
-   [routerLink]="['/events', event.id, 'ticket']"
-   class="btn btn-success btn-lg">
-  View Your Ticket
-</a>
+          <button *ngIf="currentUser?.id && !isRegistered"
+                  (click)="registerForEvent()" 
+                  class="btn btn-primary btn-lg">
+            Register Now
+          </button>
+          <a *ngIf="currentUser?.id && isRegistered"
+             [routerLink]="['/events', event.id, 'ticket']"
+             class="btn btn-success btn-lg">
+            View Your Ticket
+          </a>
           <a routerLink="/events" class="btn btn-outline-secondary ms-2">
             Back to Events
           </a>

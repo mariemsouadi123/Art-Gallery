@@ -87,4 +87,28 @@ export class PaymentService {
   getTransactionsCount(): Observable<number> {
     return this.http.get<number>(`${this.apiUrl}/count`, { withCredentials: true });
   }
+
+
+  // PAYMENT FOR EVENT TICKETS :
+  
+   // Event Payment Methods
+   processEventPayment(registrationId: number, paymentMethod: string, cardLastFour: string) {
+    return this.http.post(
+      `${this.apiUrl}/payments/events/process`,
+      { registrationId, paymentMethod, cardLastFour },
+      { withCredentials: true }
+    );
+  }
+
+  getEventPaymentHistory(userId: number) {
+    return this.http.get(
+      `${this.apiUrl}/payments/events/user/${userId}/history`,
+      { withCredentials: true }
+    );
+  }
+
 }
+
+
+
+

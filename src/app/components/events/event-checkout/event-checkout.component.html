@@ -1,0 +1,50 @@
+<div class="checkout-container">
+    <h2>Complete Your Payment</h2>
+    
+    <div *ngIf="loading" class="loading-spinner">
+      <div class="spinner"></div>
+    </div>
+  
+    <div *ngIf="!loading">
+      <div class="event-info">
+        <h3>{{ event?.title }}</h3>
+        <p>Price: {{ event?.price | currency }}</p>
+      </div>
+  
+      <div *ngIf="paymentError" class="error-message">
+        {{ paymentError }}
+      </div>
+  
+      <div class="payment-form">
+        <div class="form-group">
+          <label>Card Number</label>
+          <input type="text" 
+                 [(ngModel)]="cardNumber" 
+                 (input)="formatCardNumber()"
+                 placeholder="1234 5678 9012 3456">
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label>Expiry Date</label>
+            <input type="text" 
+                   [(ngModel)]="expiryDate" 
+                   (input)="formatExpiryDate()"
+                   placeholder="MM/YY">
+          </div>
+          
+          <div class="form-group">
+            <label>CVV</label>
+            <input type="text" 
+                   [(ngModel)]="cvv" 
+                   maxlength="3"
+                   placeholder="123">
+          </div>
+        </div>
+        
+        <button (click)="processPayment()" [disabled]="isLoading">
+          {{ isLoading ? 'Processing...' : 'Complete Payment' }}
+        </button>
+      </div>
+    </div>
+  </div>

@@ -2,53 +2,67 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+interface EventRegistration {
+  id: number;
+  eventId: number;
+  userId: number;
+  registrationDate: string;
+  paymentStatus: string;
+  ticketCode: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class EventService {
-  private apiUrl = 'http://localhost:8080/events';
+  private apiUrl = 'http://localhost:8080';
 
   constructor(private http: HttpClient) { }
 
-  getEvents(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+  getEvents() {
+    return this.http.get(`${this.apiUrl}/events`);
   }
 
-  getTicket(eventId: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${eventId}/ticket`);
+
+  getTicket(eventId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/events/${eventId}/ticket`);
   }
 
-  // In event.service.ts
   getUpcomingEvents(): Observable<any[]> {
-  return this.http.get<any[]>(`${this.apiUrl}/upcoming?testData=true`); // Temporary for testing
+    return this.http.get<any[]>(`${this.apiUrl}/events/upcoming`);
   }
 
-  getEvent(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${id}`);
+  getEvent(id: number) {
+    return this.http.get(`${this.apiUrl}/events/${id}`);
   }
 
   createEvent(event: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl, event);
+    return this.http.post<any>(`${this.apiUrl}/events`, event);
   }
 
   updateEvent(id: number, event: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${id}`, event);
+    return this.http.put<any>(`${this.apiUrl}/events/${id}`, event);
   }
 
   deleteEvent(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/events/${id}`);
   }
 
-  registerForEvent(payload: {
-    eventId: number;
-    userId: number;
-    attendees?: number;
-    specialRequirements?: string;
-  }): Observable<any> {
-    return this.http.post(`${this.apiUrl}/events/${payload.eventId}/register`, payload);
+  // event.service.ts
+
+  registerForEvent(eventId: number, userId: number) {
+    return this.http.post(
+      `${this.apiUrl}/events/${eventId}/register/${userId}`,
+      {},
+      { withCredentials: true }
+    );
   }
 
-  getUserRegistrations(userId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/user/${userId}`);
+  
+  getUserRegistrations(userId: number) {
+    return this.http.get(
+      `${this.apiUrl}/events/user/${userId}/registrations`,
+      { withCredentials: true }
+    );
   }
 }

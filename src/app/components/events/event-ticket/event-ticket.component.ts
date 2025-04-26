@@ -33,6 +33,10 @@ export class EventTicketComponent implements OnInit {
     }
 
     const eventId = this.route.snapshot.params['id'];
+    this.loadEventAndTicket(Number(eventId)); // Convert to number here
+  }
+
+  loadEventAndTicket(eventId: number): void {
     this.eventService.getEvent(eventId).subscribe({
       next: (event) => {
         this.event = event;
@@ -45,10 +49,9 @@ export class EventTicketComponent implements OnInit {
     });
   }
 
-  loadTicket(eventId: string) {
-    // Change getUserTicket to getTicket if that's the correct method name
+  loadTicket(eventId: number): void {  // Changed parameter type to number
     this.eventService.getTicket(eventId).subscribe({
-      next: (ticket: any) => {  // Add type annotation
+      next: (ticket: any) => {
         this.ticket = ticket;
         this.loading = false;
       },
@@ -59,7 +62,7 @@ export class EventTicketComponent implements OnInit {
     });
   }
 
-  printTicket() {
+  printTicket(): void {
     window.print();
   }
 }

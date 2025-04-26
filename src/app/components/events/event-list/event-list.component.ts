@@ -3,6 +3,7 @@ import { CommonModule, DatePipe, CurrencyPipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { EventService } from '../../../services/event.service';
 import { AuthService } from '../../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-event-list',
@@ -20,7 +21,8 @@ export class EventListComponent implements OnInit {
 
   constructor(
     private eventService: EventService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -29,13 +31,17 @@ export class EventListComponent implements OnInit {
   }
 
   loadData(): void {
+    console.log('Loading events...'); // Removed apiUrl reference
     this.eventService.getEvents().subscribe({
       next: (events: any) => {
+        console.log('Received events:', events);
         this.allEvents = events;
         
         if (this.currentUser) {
+          console.log('Loading registrations for user:', this.currentUser.id);
           this.eventService.getUserRegistrations(this.currentUser.id).subscribe({
             next: (registrations: any) => {
+              console.log('Received registrations:', registrations);
               this.registeredEvents = registrations.map((reg: any) => reg.event);
               this.loading = false;
             },
@@ -60,18 +66,23 @@ export class EventListComponent implements OnInit {
   }
 
   registerForEvent(eventId: number): void {
-    if (!this.currentUser) return;
-    
-    this.eventService.registerForEvent({
-      eventId: eventId,
-      userId: this.currentUser.id,
-      attendees: 1
-    }).subscribe({
-      next: () => {
-        this.loadData(); // Refresh the list
+    if (!this.currentUser) {
+      this.router.navigate(['/login']);
+      return;
+    }
+  
+    this.eventService.registerForEvent(eventId, this.currentUser.id).subscribe({
+      next: (registration: any) => {
+        this.router.navigate(['/events', eventId, 'checkout'], {
+          state: { 
+            registrationId: registration.id,
+            event: registration.event
+          }
+        });
       },
-      error: (err) => {
-        console.error('Registration failed:', err);
+      error: (err: any) => {
+        console.error('Registration error:', err);
+        alert(`Registration failed: ${err.error?.message || err.statusText}`);
       }
     });
   }

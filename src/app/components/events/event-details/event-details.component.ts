@@ -2,27 +2,21 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { EventService } from '../../../services/event.service';
-import { AuthService, User } from '../../../services/auth.service';
-import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-event-details',
-  templateUrl: './event-details.component.html',
-  styleUrls: ['./event-details.component.css'],
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, DatePipe]
+  imports: [CommonModule, RouterModule, DatePipe],
+  templateUrl: './event-details.component.html',
+  styleUrls: ['./event-details.component.css']
 })
 export class EventDetailsComponent implements OnInit {
   event: any = null;
   loading = true;
-  currentUser: User | null = null;
+  currentUser: any;
   isRegistered = false;
   registrationError = '';
-  showRegistrationForm = false;
-  registrationData = {
-    attendees: 1,
-    specialRequirements: ''
-  };
 
   constructor(
     private eventService: EventService,
@@ -45,12 +39,12 @@ export class EventDetailsComponent implements OnInit {
   loadEvent(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.eventService.getEvent(id).subscribe({
-      next: (event) => {
+      next: (event: any) => {
         this.event = event;
         this.checkRegistration();
         this.loading = false;
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error loading event:', err);
         this.router.navigate(['/events']);
       }
@@ -60,10 +54,10 @@ export class EventDetailsComponent implements OnInit {
   checkRegistration(): void {
     if (this.currentUser && this.event) {
       this.eventService.getUserRegistrations(this.currentUser.id).subscribe({
-        next: (registrations: any[]) => {
-          this.isRegistered = registrations.some(r => r.event.id === this.event?.id);
+        next: (registrations: any) => {
+          this.isRegistered = registrations.some((r: any) => r.event.id === this.event?.id);
         },
-        error: (err) => {
+        error: (err: any) => {
           console.error('Error checking registration:', err);
         }
       });
@@ -72,31 +66,24 @@ export class EventDetailsComponent implements OnInit {
 
   registerForEvent(): void {
     if (!this.currentUser || !this.event) return;
-
+  
+    this.loading = true;
     this.registrationError = '';
-    const registrationPayload = {
-      eventId: this.event.id,
-      userId: this.currentUser.id,
-      attendees: this.registrationData.attendees,
-      specialRequirements: this.registrationData.specialRequirements
-    };
-
-    this.eventService.registerForEvent(registrationPayload).subscribe({
-      next: () => {
-        this.isRegistered = true;
-        this.showRegistrationForm = false;
-        this.router.navigate(['/events', this.event.id, 'ticket'], {
-          queryParams: { refresh: Date.now() }
+  
+    this.eventService.registerForEvent(this.event.id, this.currentUser.id).subscribe({
+      next: (registration: any) => {
+        this.router.navigate(['/events', this.event.id, 'checkout'], {
+          state: { 
+            registrationId: registration.id,
+            event: this.event
+          }
         });
       },
-      error: (err) => {
+      error: (err: any) => {
+        this.loading = false;
+        this.registrationError = err.error?.message || 'Registration failed';
         console.error('Registration error:', err);
-        this.registrationError = err.error?.message || 'Registration failed. Please try again.';
       }
     });
-  }
-
-  toggleRegistrationForm(): void {
-    this.showRegistrationForm = !this.showRegistrationForm;
   }
 }

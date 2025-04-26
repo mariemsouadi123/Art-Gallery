@@ -52,12 +52,20 @@ export class EventFormComponent implements OnInit {
     
     this.loading = true;
     this.eventService.getEvent(this.eventId).subscribe({
-      next: (event) => {
-        this.eventForm.patchValue({
-          ...event,
-          startDate: this.formatDateForInput(event.startDate),
-          endDate: this.formatDateForInput(event.endDate)
-        });
+      next: (event: any) => {
+        if (event) {
+          this.eventForm.patchValue({
+            title: event.title,
+            description: event.description,
+            startDate: this.formatDateForInput(event.startDate),
+            endDate: this.formatDateForInput(event.endDate),
+            location: event.location || '',
+            onlineUrl: event.onlineUrl || '',
+            price: event.price || 0,
+            capacity: event.capacity || null,
+            imageUrl: event.imageUrl || ''
+          });
+        }
         this.loading = false;
       },
       error: (err) => {
@@ -79,7 +87,7 @@ export class EventFormComponent implements OnInit {
       : this.eventService.createEvent(eventData);
 
     operation.subscribe({
-      next: (event) => {
+      next: (event: any) => {
         this.router.navigate(['/events', event.id]);
       },
       error: (err) => {
@@ -91,6 +99,8 @@ export class EventFormComponent implements OnInit {
   }
 
   private formatDateForInput(dateString: string): string {
+    if (!dateString) return '';
+    // Convert ISO date to datetime-local format (YYYY-MM-DDTHH:MM)
     return dateString.substring(0, 16);
   }
 }
