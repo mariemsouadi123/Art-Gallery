@@ -53,12 +53,12 @@ export class EventDetailsComponent implements OnInit {
 
   checkRegistration(): void {
     if (this.currentUser && this.event) {
-      this.eventService.getUserRegistrations(this.currentUser.id).subscribe({
-        next: (registrations: any) => {
-          this.isRegistered = registrations.some((r: any) => r.event.id === this.event?.id);
+      this.eventService.getRegistration(this.event.id, this.currentUser.id).subscribe({
+        next: (registration: any) => {
+          this.isRegistered = true;
         },
-        error: (err: any) => {
-          console.error('Error checking registration:', err);
+        error: () => {
+          this.isRegistered = false;
         }
       });
     }
@@ -71,18 +71,13 @@ export class EventDetailsComponent implements OnInit {
     this.registrationError = '';
   
     this.eventService.registerForEvent(this.event.id, this.currentUser.id).subscribe({
-      next: (registration: any) => {
-        this.router.navigate(['/events', this.event.id, 'checkout'], {
-          state: { 
-            registrationId: registration.id,
-            event: this.event
-          }
-        });
+      next: () => {
+        this.isRegistered = true;
+        this.loading = false;
       },
       error: (err: any) => {
         this.loading = false;
-        this.registrationError = err.error?.message || 'Registration failed';
-        console.error('Registration error:', err);
+        this.registrationError = err.error?.error || 'Already Registered';
       }
     });
   }

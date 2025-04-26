@@ -31,7 +31,7 @@ export class EventListComponent implements OnInit {
   }
 
   loadData(): void {
-    console.log('Loading events...'); // Removed apiUrl reference
+    console.log('Loading events...');
     this.eventService.getEvents().subscribe({
       next: (events: any) => {
         console.log('Received events:', events);
@@ -65,29 +65,13 @@ export class EventListComponent implements OnInit {
     return this.registeredEvents.some((event: any) => event.id === eventId);
   }
 
-  registerForEvent(eventId: number): void {
-    if (!this.currentUser) {
-      this.router.navigate(['/login']);
-      return;
-    }
-  
-    this.eventService.registerForEvent(eventId, this.currentUser.id).subscribe({
-      next: (registration: any) => {
-        this.router.navigate(['/events', eventId, 'checkout'], {
-          state: { 
-            registrationId: registration.id,
-            event: registration.event
-          }
-        });
-      },
-      error: (err: any) => {
-        console.error('Registration error:', err);
-        alert(`Registration failed: ${err.error?.message || err.statusText}`);
-      }
-    });
-  }
-
   setActiveTab(tab: 'all' | 'registered'): void {
     this.activeTab = tab;
   }
+
+  isEventPaid(eventId: number): boolean {
+    const registration = this.registeredEvents.find((reg: any) => reg.event?.id === eventId);
+    return registration?.paymentStatus === 'PAID';
+  }
+  
 }

@@ -2,7 +2,8 @@
 
 :host {
   display: block;
-  background: linear-gradient(135deg, #F5EEDC 0%, #e7cab0 50%, #27548A 100%);  padding: 2rem; 
+  background: linear-gradient(135deg, #F5EEDC 0%, #e7cab0 50%, #27548A 100%);  
+  padding: 2rem; 
   font-family: 'Montserrat', sans-serif;
 }
 
@@ -157,42 +158,33 @@
 
 .event-actions {
   display: flex;
-  gap: 1rem;
+  justify-content: center;
   margin-top: auto;
+  padding-top: 1rem;
 }
 
-.details-btn, .register-btn, .ticket-btn {
+.see-more-btn {
   padding: 0.7rem 1.5rem;
   border-radius: 30px;
   font-weight: 600;
   text-decoration: none;
   transition: all 0.3s ease;
-  flex-grow: 1;
-  text-align: center;
-}
-
-.details-btn {
   background: transparent;
   border: 2px solid #27548A;
   color: #27548A;
+  text-align: center;
 }
 
-.details-btn:hover {
+.see-more-btn:hover {
   background: rgba(39, 84, 138, 0.1);
 }
 
-.register-btn {
-  background: linear-gradient(135deg, #DDA853, #CC9B6D);
-  color: white;
-  border: none;
-}
-
-.register-btn:hover {
-  box-shadow: 0 5px 15px rgba(221, 168, 83, 0.4);
-  transform: translateY(-2px);
-}
-
 .ticket-btn {
+  padding: 0.7rem 1.5rem;
+  border-radius: 30px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
   background: linear-gradient(135deg, #27548A, #183B4E);
   color: white;
   border: none;
@@ -258,5 +250,21 @@
   
   .events-grid {
     grid-template-columns: 1fr;
+  }
+  .get-ticket-btn {
+    padding: 0.7rem 1.5rem;
+    border-radius: 30px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #DDA853, #CC9B6D);
+    color: white;
+    border: none;
+    text-align: center;
+  }
+  
+  .get-ticket-btn:hover {
+    box-shadow: 0 5px 15px rgba(221, 168, 83, 0.4);
+    transform: translateY(-2px);
   }
 }

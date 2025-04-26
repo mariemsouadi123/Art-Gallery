@@ -92,10 +92,15 @@ export class PaymentService {
   // PAYMENT FOR EVENT TICKETS :
   
    // Event Payment Methods
-   processEventPayment(registrationId: number, paymentMethod: string, cardLastFour: string) {
+   processEventPayment(
+    eventId: number,
+    userId: number, 
+    paymentMethod: string, 
+    cardLastFour: string
+  ) {
     return this.http.post(
-      `${this.apiUrl}/payments/events/process`,
-      { registrationId, paymentMethod, cardLastFour },
+      `${this.apiUrl}/events/process`,
+      { eventId, userId, paymentMethod, cardLastFour },
       { withCredentials: true }
     );
   }

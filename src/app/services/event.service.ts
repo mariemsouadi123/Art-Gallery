@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
 interface EventRegistration {
   id: number;
@@ -22,7 +23,6 @@ export class EventService {
   getEvents() {
     return this.http.get(`${this.apiUrl}/events`);
   }
-
 
   getTicket(eventId: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/events/${eventId}/ticket`);
@@ -48,21 +48,29 @@ export class EventService {
     return this.http.delete<void>(`${this.apiUrl}/events/${id}`);
   }
 
-  // event.service.ts
-
   registerForEvent(eventId: number, userId: number) {
     return this.http.post(
       `${this.apiUrl}/events/${eventId}/register/${userId}`,
-      {},
+      {}, 
       { withCredentials: true }
     );
   }
 
-  
   getUserRegistrations(userId: number) {
     return this.http.get(
       `${this.apiUrl}/events/user/${userId}/registrations`,
       { withCredentials: true }
+    );
+  }
+
+  getRegistration(eventId: number, userId: number) {
+    return this.http.get(`${this.apiUrl}/events/${eventId}/registration/${userId}`);
+  }
+
+  isEventPaid(eventId: number, userId: number): Observable<boolean> {
+    return this.getRegistration(eventId, userId).pipe(
+      map((registration: any) => registration.paymentStatus === 'PAID'),
+      catchError(() => of(false))
     );
   }
 }

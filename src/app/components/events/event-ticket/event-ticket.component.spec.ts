@@ -46,7 +46,7 @@ export class EventTicketComponent implements OnInit {
             console.log('Registrations loaded:', registrations);
             
             // Handle both event object and event ID cases
-            this.ticket = registrations.find((r: any) => {
+            this.ticket = (registrations as any[]).find((r: any) => {
               if (!r.event) return false;
               return typeof r.event === 'object' 
                 ? r.event.id === eventId

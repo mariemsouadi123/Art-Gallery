@@ -1,7 +1,7 @@
 <div class="events-container">
   <!-- Header with artistic font -->
   <div class="events-header">
-    <h2 class="artistic-title">Art Gallery Events</h2>
+    <h2 class="artistic-title">ArtyVinci Events</h2>
     <p class="artistic-subtitle">Discover and participate in our creative gatherings</p>
   </div>
   
@@ -62,19 +62,8 @@
           </div>
           
           <div class="event-actions">
-            <a [routerLink]="['/events', event.id]" class="details-btn">
-              Details
-            </a>
-            
-            <button *ngIf="!isUserRegistered(event.id)"
-                    (click)="registerForEvent(event.id)" 
-                    class="register-btn">
-              Register
-            </button>
-            <a *ngIf="isUserRegistered(event.id)"
-               [routerLink]="['/events', event.id, 'ticket']"
-               class="ticket-btn">
-              View Ticket
+            <a [routerLink]="['/events', event.id]" class="see-more-btn">
+              See More
             </a>
           </div>
         </div>
@@ -115,10 +104,17 @@
           </div>
           
           <div class="event-actions">
-            <a [routerLink]="['/events', event.id]" class="details-btn">
-              Details
+            <a [routerLink]="['/events', event.id]" class="see-more-btn">
+              See More
             </a>
-            <a [routerLink]="['/events', event.id, 'ticket']" class="ticket-btn">
+            <a *ngIf="isUserRegistered(event.id) && !isEventPaid(event.id)"
+               [routerLink]="['/events', event.id, 'checkout']"
+               class="get-ticket-btn">
+              Pay Now
+            </a>
+            <a *ngIf="isUserRegistered(event.id) && isEventPaid(event.id)"
+               [routerLink]="['/events', event.id, 'ticket']"
+               class="ticket-btn">
               View Ticket
             </a>
           </div>

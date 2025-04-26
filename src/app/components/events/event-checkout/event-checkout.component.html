@@ -1,50 +1,69 @@
 <div class="checkout-container">
-    <h2>Complete Your Payment</h2>
-    
-    <div *ngIf="loading" class="loading-spinner">
-      <div class="spinner"></div>
+  <div class="checkout-header">
+    <h2 class="checkout-title">Complete Your Payment</h2>
+    <p class="checkout-subtitle">Secure credit card payment</p>
+  </div>
+  
+  <div *ngIf="loading" class="loading-spinner">
+    <div class="spinner"></div>
+  </div>
+
+  <div *ngIf="!loading" class="checkout-content">
+    <div class="event-summary">
+      <h3>{{ event?.title }}</h3>
+      <div class="event-price">
+        {{ event?.price | currency:'USD':'symbol':'1.2-2' }}
+      </div>
     </div>
-  
-    <div *ngIf="!loading">
-      <div class="event-info">
-        <h3>{{ event?.title }}</h3>
-        <p>Price: {{ event?.price | currency }}</p>
+
+    <div *ngIf="paymentError" class="error-message">
+      {{ paymentError }}
+    </div>
+
+    <form (submit)="processPayment()" class="payment-form">
+      <div class="form-group">
+        <label for="cardName">Cardholder Name</label>
+        <input type="text" id="cardName" [(ngModel)]="cardName" name="cardName" 
+               placeholder="John Doe" required>
       </div>
-  
-      <div *ngIf="paymentError" class="error-message">
-        {{ paymentError }}
+
+      <div class="form-group">
+        <label for="cardNumber">Card Number</label>
+        <input type="text" id="cardNumber" [(ngModel)]="cardNumber" name="cardNumber"
+               (input)="formatCardNumber()" placeholder="1234 5678 9012 3456" required>
       </div>
-  
-      <div class="payment-form">
+      
+      <div class="form-row">
         <div class="form-group">
-          <label>Card Number</label>
-          <input type="text" 
-                 [(ngModel)]="cardNumber" 
-                 (input)="formatCardNumber()"
-                 placeholder="1234 5678 9012 3456">
+          <label for="expiryDate">Expiry Date</label>
+          <input type="text" id="expiryDate" [(ngModel)]="expiryDate" name="expiryDate"
+                 (input)="formatExpiryDate()" placeholder="MM/YY" required>
         </div>
         
-        <div class="form-row">
-          <div class="form-group">
-            <label>Expiry Date</label>
-            <input type="text" 
-                   [(ngModel)]="expiryDate" 
-                   (input)="formatExpiryDate()"
-                   placeholder="MM/YY">
-          </div>
-          
-          <div class="form-group">
-            <label>CVV</label>
-            <input type="text" 
-                   [(ngModel)]="cvv" 
-                   maxlength="3"
-                   placeholder="123">
-          </div>
+        <div class="form-group">
+          <label for="cvv">CVV</label>
+          <input type="text" id="cvv" [(ngModel)]="cvv" name="cvv"
+                 maxlength="3" placeholder="123" required>
         </div>
-        
-        <button (click)="processPayment()" [disabled]="isLoading">
-          {{ isLoading ? 'Processing...' : 'Complete Payment' }}
-        </button>
       </div>
+
+      <div class="form-group">
+        <label for="email">Email for Receipt</label>
+        <input type="email" id="email" [(ngModel)]="email" name="email"
+               placeholder="your@email.com" required>
+      </div>
+      
+      <button type="submit" class="pay-button" [disabled]="isLoading">
+        {{ isLoading ? 'Processing...' : 'Pay Now' }}
+      </button>
+    </form>
+
+    <div class="security-info">
+      <div class="security-badge">
+        <i class="bi bi-shield-lock"></i>
+        <span>Secure Payment</span>
+      </div>
+      <p>Your payment information is encrypted and processed securely.</p>
     </div>
   </div>
+</div>

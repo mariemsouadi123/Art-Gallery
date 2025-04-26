@@ -62,13 +62,14 @@
         <div class="event-actions">
           <button *ngIf="currentUser?.id && !isRegistered"
                   (click)="registerForEvent()" 
-                  class="btn btn-primary btn-lg">
-            Register Now
+                  class="btn btn-primary btn-lg"
+                  [disabled]="loading">
+            {{ loading ? 'Registering...' : 'Register' }}
           </button>
           <a *ngIf="currentUser?.id && isRegistered"
-             [routerLink]="['/events', event.id, 'ticket']"
-             class="btn btn-success btn-lg">
-            View Your Ticket
+             [routerLink]="['/events', event.id, 'checkout']"
+             class="btn btn-warning btn-lg">
+            Pay Now
           </a>
           <a routerLink="/events" class="btn btn-outline-secondary ms-2">
             Back to Events

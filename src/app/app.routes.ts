@@ -18,6 +18,7 @@ import { EventListComponent } from './components/events/event-list/event-list.co
 import { EventDetailsComponent } from './components/events/event-details/event-details.component';
 import { EventFormComponent } from './components/events/event-form/event-form.component';
 import { EventTicketComponent } from './components/events/event-ticket/event-ticket.component';
+import { EventCheckoutComponent } from './components/events/event-checkout/event-checkout.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -71,6 +72,7 @@ export const routes: Routes = [
       { path: 'new', component: EventFormComponent },
       { path: ':id', component: EventDetailsComponent },
       { path: ':id/edit', component: EventFormComponent },
+      { path: ':id/checkout', component: EventCheckoutComponent },
       { path: ':id/ticket', component: EventTicketComponent }
     ],
     canActivate: [authGuard],

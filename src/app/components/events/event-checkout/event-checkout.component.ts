@@ -18,12 +18,14 @@ export class EventCheckoutComponent {
   loading = true;
   paymentError = '';
   isLoading = false;
-  registrationId: any;
+  currentUser: any;
 
   // Payment form
   cardNumber = '';
+  cardName = '';
   expiryDate = '';
   cvv = '';
+  email = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -32,57 +34,126 @@ export class EventCheckoutComponent {
     private paymentService: PaymentService,
     private authService: AuthService
   ) {
-    const navigation = this.router.getCurrentNavigation();
-    this.registrationId = navigation?.extras.state?.['registrationId'];
-
+    this.currentUser = this.authService.getCurrentUser();
+    
     const eventId = this.route.snapshot.paramMap.get('id');
-    this.eventService.getEvent(Number(eventId)).subscribe({
-      next: (event: any) => {
-        this.event = event;
-        this.loading = false;
-      },
-      error: () => this.router.navigate(['/events'])
-    });
+    if (eventId) {
+      this.eventService.getEvent(Number(eventId)).subscribe({
+        next: (event: any) => {
+          this.event = event;
+          this.loading = false;
+        },
+        error: () => this.router.navigate(['/events'])
+      });
+    }
   }
 
   processPayment() {
     this.isLoading = true;
     this.paymentError = '';
-
-    if (!this.cardNumber || !this.expiryDate || !this.cvv) {
-      this.paymentError = 'Please fill all payment details';
-      this.isLoading = false;
-      return;
-    }
-
+  
+    const eventId = this.route.snapshot.paramMap.get('id');
     const cardLastFour = this.cardNumber.replace(/\s/g, '').slice(-4);
     
     this.paymentService.processEventPayment(
-      this.registrationId,
+      Number(eventId),
+      this.currentUser.id,
       'CREDIT_CARD',
       cardLastFour
     ).subscribe({
-      next: () => this.router.navigate(['/events', this.event.id, 'ticket']),
-      error: () => {
-        this.paymentError = 'Payment failed. Please try again.';
+      next: (response: any) => {
+        this.router.navigate(['/events', this.event.id, 'ticket'], {
+          state: { 
+            paymentSuccess: true,
+            ticketCode: response.ticketCode
+          }
+        });
+      },
+      error: (err) => {
+        this.paymentError = err.error?.message || 'Payment failed. Please try again.';
         this.isLoading = false;
       }
     });
   }
 
-  formatCardNumber() {
-    this.cardNumber = this.cardNumber.replace(/\D/g, '');
-    if (this.cardNumber.length > 16) {
-      this.cardNumber = this.cardNumber.substring(0, 16);
+  private validateForm(): boolean {
+    if (!this.cardNumber || !this.expiryDate || !this.cvv || !this.cardName || !this.email) {
+      this.paymentError = 'Please fill all payment details';
+      return false;
     }
-    this.cardNumber = this.cardNumber.replace(/(\d{4})(?=\d)/g, '$1 ');
+
+    if (!this.isValidCardNumber()) {
+      this.paymentError = 'Please enter a valid card number';
+      return false;
+    }
+
+    if (!this.isValidExpiryDate()) {
+      this.paymentError = 'Please enter a valid expiry date (MM/YY)';
+      return false;
+    }
+
+    if (!this.isValidCVV()) {
+      this.paymentError = 'Please enter a valid CVV (3-4 digits)';
+      return false;
+    }
+
+    if (!this.isValidEmail()) {
+      this.paymentError = 'Please enter a valid email address';
+      return false;
+    }
+
+    return true;
+  }
+
+  private isValidCardNumber(): boolean {
+    const cleaned = this.cardNumber.replace(/\s/g, '');
+    return /^\d{16}$/.test(cleaned);
+  }
+
+  private isValidExpiryDate(): boolean {
+    if (!/^\d{2}\/\d{2}$/.test(this.expiryDate)) return false;
+    
+    const [month, year] = this.expiryDate.split('/');
+    const now = new Date();
+    const currentYear = now.getFullYear() % 100;
+    const currentMonth = now.getMonth() + 1;
+    
+    if (Number(year) < currentYear) return false;
+    if (Number(year) === currentYear && Number(month) < currentMonth) return false;
+    if (Number(month) > 12 || Number(month) < 1) return false;
+    
+    return true;
+  }
+
+  private isValidCVV(): boolean {
+    return /^\d{3,4}$/.test(this.cvv);
+  }
+
+  private isValidEmail(): boolean {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email);
+  }
+
+  formatCardNumber() {
+    let numbers = this.cardNumber.replace(/\D/g, '');
+    if (numbers.length > 16) {
+      numbers = numbers.substring(0, 16);
+    }
+    
+    // Format as XXXX XXXX XXXX XXXX
+    this.cardNumber = numbers.replace(/(\d{4})(?=\d)/g, '$1 ');
   }
   
   formatExpiryDate() {
-    this.expiryDate = this.expiryDate.replace(/\D/g, '');
-    if (this.expiryDate.length > 2) {
-      this.expiryDate = this.expiryDate.substring(0, 2) + '/' + 
-                       this.expiryDate.substring(2, 4);
+    let numbers = this.expiryDate.replace(/\D/g, '');
+    if (numbers.length > 4) {
+      numbers = numbers.substring(0, 4);
+    }
+    
+    // Format as MM/YY
+    if (numbers.length > 2) {
+      this.expiryDate = numbers.substring(0, 2) + '/' + numbers.substring(2, 4);
+    } else {
+      this.expiryDate = numbers;
     }
   }
 }
