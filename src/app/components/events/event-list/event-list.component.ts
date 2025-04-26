@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { EventService } from '../../../services/event.service';
 import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-event-list',
@@ -42,7 +43,8 @@ export class EventListComponent implements OnInit {
           this.eventService.getUserRegistrations(this.currentUser.id).subscribe({
             next: (registrations: any) => {
               console.log('Received registrations:', registrations);
-              this.registeredEvents = registrations.map((reg: any) => reg.event);
+              // Store full registration objects, not just events
+              this.registeredEvents = registrations;
               this.loading = false;
             },
             error: (err: any) => {
@@ -62,7 +64,7 @@ export class EventListComponent implements OnInit {
   }
 
   isUserRegistered(eventId: number): boolean {
-    return this.registeredEvents.some((event: any) => event.id === eventId);
+    return this.registeredEvents.some((reg: any) => reg.event?.id === eventId);
   }
 
   setActiveTab(tab: 'all' | 'registered'): void {
@@ -73,5 +75,12 @@ export class EventListComponent implements OnInit {
     const registration = this.registeredEvents.find((reg: any) => reg.event?.id === eventId);
     return registration?.paymentStatus === 'PAID';
   }
+
+  getEventFromRegistration(registration: any): any {
+    return registration.event || registration;
+  }
   
+  navigateToDashboard(): void {
+    this.router.navigate(['/user-home']);
+  }
 }

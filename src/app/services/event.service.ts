@@ -63,8 +63,10 @@ export class EventService {
     );
   }
 
-  getRegistration(eventId: number, userId: number) {
-    return this.http.get(`${this.apiUrl}/events/${eventId}/registration/${userId}`);
+  getRegistration(eventId: number, userId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/events/${eventId}/registration/${userId}`, { 
+      withCredentials: true 
+    });
   }
 
   isEventPaid(eventId: number, userId: number): Observable<boolean> {

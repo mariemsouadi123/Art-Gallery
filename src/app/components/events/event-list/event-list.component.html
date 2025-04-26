@@ -1,6 +1,9 @@
 <div class="events-container">
   <!-- Header with artistic font -->
   <div class="events-header">
+    <button class="back-button" (click)="navigateToDashboard()">
+      ← Back to Dashboard
+    </button>
     <h2 class="artistic-title">ArtyVinci Events</h2>
     <p class="artistic-subtitle">Discover and participate in our creative gatherings</p>
   </div>
@@ -12,11 +15,6 @@
             (click)="setActiveTab('all')">
       All Events
     </button>
-    <button class="tab-btn" 
-            [class.active]="activeTab === 'registered'"
-            (click)="setActiveTab('registered')">
-      My Events
-    </button>
   </div>
 
   <!-- Loading Indicator -->
@@ -26,10 +24,7 @@
 
   <!-- All Events Tab -->
   <div *ngIf="!loading && activeTab === 'all'">
-    <div *ngIf="allEvents.length === 0" class="no-events">
-      <p>No upcoming events found</p>
-      <button class="refresh-btn" (click)="loadData()">Refresh</button>
-    </div>
+    
 
     <div class="events-grid">
       <div class="event-card" *ngFor="let event of allEvents">
@@ -64,58 +59,6 @@
           <div class="event-actions">
             <a [routerLink]="['/events', event.id]" class="see-more-btn">
               See More
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Registered Events Tab -->
-  <div *ngIf="!loading && activeTab === 'registered'">
-    <div *ngIf="registeredEvents.length === 0" class="no-events">
-      <p>You haven't registered for any events yet</p>
-      <button class="refresh-btn" (click)="setActiveTab('all')">Browse Events</button>
-    </div>
-
-    <div class="events-grid">
-      <div class="event-card" *ngFor="let event of registeredEvents">
-        <div class="event-image-container">
-          <img [src]="event.imageUrl || 'assets/default-event.jpg'" 
-               class="event-image" 
-               [alt]="event.title">
-          <div class="event-date registered">
-            {{ event.startDate | date:'MMM d' }}
-          </div>
-        </div>
-        
-        <div class="event-content">
-          <h3 class="event-title">{{ event.title }}</h3>
-          
-          <div class="event-meta">
-            <div class="meta-item">
-              <span class="icon-clock">🕒</span>
-              {{ event.startDate | date:'shortTime' }}
-            </div>
-            <div class="meta-item" *ngIf="event.location">
-              <span class="icon-location">📍</span>
-              {{ event.location }}
-            </div>
-          </div>
-          
-          <div class="event-actions">
-            <a [routerLink]="['/events', event.id]" class="see-more-btn">
-              See More
-            </a>
-            <a *ngIf="isUserRegistered(event.id) && !isEventPaid(event.id)"
-               [routerLink]="['/events', event.id, 'checkout']"
-               class="get-ticket-btn">
-              Pay Now
-            </a>
-            <a *ngIf="isUserRegistered(event.id) && isEventPaid(event.id)"
-               [routerLink]="['/events', event.id, 'ticket']"
-               class="ticket-btn">
-              View Ticket
             </a>
           </div>
         </div>

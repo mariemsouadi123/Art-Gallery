@@ -17,6 +17,7 @@ export class EventTicketComponent implements OnInit {
   event: any;
   ticket: any;
   currentUser: any;
+  ticketCode: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -33,14 +34,30 @@ export class EventTicketComponent implements OnInit {
     }
 
     const eventId = this.route.snapshot.params['id'];
-    this.loadEventAndTicket(Number(eventId)); // Convert to number here
+    this.loadEventAndRegistration(eventId);
   }
 
-  loadEventAndTicket(eventId: number): void {
+  loadEventAndRegistration(eventId: number): void {
+    // First load the event
     this.eventService.getEvent(eventId).subscribe({
       next: (event) => {
         this.event = event;
-        this.loadTicket(eventId);
+        // Then load the registration/ticket info
+        this.eventService.getRegistration(eventId, this.currentUser.id).subscribe({
+          next: (registration: any) => {
+            this.ticket = {
+              ticketCode: registration.ticketCode,
+              paymentStatus: registration.paymentStatus,
+              registrationDate: registration.registrationDate
+            };
+            this.ticketCode = registration.ticketCode || this.generateTicketCode();
+            this.loading = false;
+          },
+          error: () => {
+            this.error = true;
+            this.loading = false;
+          }
+        });
       },
       error: () => {
         this.error = true;
@@ -49,20 +66,15 @@ export class EventTicketComponent implements OnInit {
     });
   }
 
-  loadTicket(eventId: number): void {  // Changed parameter type to number
-    this.eventService.getTicket(eventId).subscribe({
-      next: (ticket: any) => {
-        this.ticket = ticket;
-        this.loading = false;
-      },
-      error: () => {
-        this.error = true;
-        this.loading = false;
-      }
-    });
+  generateTicketCode(): string {
+    return 'ARTY-' + Math.random().toString(36).substring(2, 10).toUpperCase();
   }
 
   printTicket(): void {
     window.print();
+  }
+
+  goBack(): void {
+    this.router.navigate(['/events']);
   }
 }
