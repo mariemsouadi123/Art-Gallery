@@ -12,6 +12,9 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
+isLoading() {
+throw new Error('Method not implemented.');
+}
   registerForm: FormGroup;
   successMessage = signal<string | null>(null);
   errorMessage = signal<string | null>(null);

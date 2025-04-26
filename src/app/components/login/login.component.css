@@ -1,0 +1,316 @@
+/* Login Container */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url('/image2.jpg') no-repeat center center/cover;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .login-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(8px);
+    z-index: 0;
+  }
+  
+  /* Login Card */
+  .login-card {
+    background: linear-gradient(135deg, rgba(245, 238, 220, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%);
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(24, 59, 78, 0.2);
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 450px;
+    position: relative;
+    z-index: 1;
+    border: 1px solid rgba(221, 168, 83, 0.2);
+  }
+  
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .header h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #183B4E;
+    margin-bottom: 0.5rem;
+    animation: fadeIn 0.8s ease both;
+  }
+  
+  .header p {
+    font-size: 1rem;
+    color: #27548A;
+    opacity: 0.9;
+    animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both 0.2s;
+  }
+  
+  /* Error Message */
+  .error-message {
+    background: rgba(221, 168, 83, 0.1);
+    color: #183B4E;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-size: 0.95rem;
+    border: 1px solid rgba(221, 168, 83, 0.3);
+  }
+  
+  /* Login Form */
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  /* Form Group */
+  .form-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-input {
+    width: 100%;
+    padding: 12px 0;
+    border: none;
+    background: transparent;
+    font-size: 1rem;
+    color: #183B4E;
+    outline: none;
+    transition: all 0.3s ease;
+  }
+  
+  .form-input:focus + .form-label,
+  .form-input:not(:placeholder-shown) + .form-label {
+    transform: translateY(-25px) scale(0.85);
+    color: #DDA853;
+  }
+  
+  .form-label {
+    position: absolute;
+    top: 12px;
+    left: 0;
+    font-size: 1rem;
+    color: #27548A;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  .input-border {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #DDA853, #c09547);
+    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  .form-input:focus ~ .input-border {
+    width: 100%;
+  }
+  
+  /* Submit Button */
+  .submit-btn {
+    background: linear-gradient(135deg, #DDA853 0%, #c09547 100%);
+    color: #F5EEDC;
+    border: none;
+    padding: 12px;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: pulse 2s infinite ease-in-out;
+  }
+  
+  .submit-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #c09547 0%, #DDA853 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(221, 168, 83, 0.4);
+  }
+  
+  .submit-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    animation: none;
+  }
+  
+  .spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid #F5EEDC;
+    border-top: 3px solid #183B4E;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  /* Alternative Actions */
+  .alternative-actions {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  .forgot-password {
+    color: #27548A;
+    text-decoration: none;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .forgot-password:hover {
+    color: #DDA853;
+  }
+  
+  .alternative-actions p {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #183B4E;
+  }
+  
+  .signup-link {
+    background: none;
+    border: none;
+    color: #DDA853;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+  }
+  
+  .signup-link:hover {
+    color: #27548A;
+  }
+  
+  /* Social Login */
+  .social-login {
+    margin-top: 2rem;
+    text-align: center;
+  }
+  
+  .social-login p {
+    font-size: 0.9rem;
+    color: #27548A;
+    margin-bottom: 1rem;
+  }
+  
+  .social-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
+  
+  .social-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 50px;
+    border: 1px solid rgba(24, 59, 78, 0.2);
+    background: #F5EEDC;
+    color: #183B4E;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  .social-btn img {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .social-btn.google:hover {
+    background: #fce8e6;
+    border-color: #db4437;
+  }
+  
+  .social-btn.facebook:hover {
+    background: #e7f0fd;
+    border-color: #4267b2;
+  }
+  
+  /* Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .login-card {
+      padding: 2rem;
+      max-width: 90%;
+    }
+  
+    .header h2 {
+      font-size: 1.8rem;
+    }
+  
+    .header p {
+      font-size: 0.9rem;
+    }
+  
+    .form-input {
+      padding: 10px 0;
+    }
+  
+    .submit-btn {
+      padding: 10px;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .login-container {
+      padding: 10px;
+    }
+  
+    .login-card {
+      padding: 1.5rem;
+    }
+  
+    .header h2 {
+      font-size: 1.5rem;
+    }
+  
+    .social-buttons {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  
+    .social-btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }

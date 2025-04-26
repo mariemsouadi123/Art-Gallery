@@ -1,0 +1,63 @@
+<nav class="navbar">
+    <div class="navbar-brand">Art Gallery</div>
+    <div class="navbar-links">
+      <a routerLink="/" class="nav-link">Home</a>
+      <a routerLink="/exhibitions" class="nav-link active">Exhibitions</a>
+      <a routerLink="/artists" class="nav-link">Artists</a>
+      <a routerLink="/contact" class="nav-link">Contact</a>
+      <a routerLink="/login" class="nav-link">Login</a>
+    </div>
+  </nav>
+  
+  <div class="exhibitions-container">
+    <div class="section-header">
+      <h1>Art Exhibitions</h1>
+      <div class="divider"></div>
+      <p class="section-subtitle">Discover our curated collection of artworks</p>
+    </div>
+  
+    @if (error()) {
+      <div class="error-message">
+        {{ error() }}
+        <button (click)="loadAllArtworks()">Try Again</button>
+      </div>
+    }
+  
+    @if (isLoading()) {
+      <div class="loading-spinner">
+        <div class="spinner"></div>
+      </div>
+    } @else {
+      <div class="artworks-list">
+        @for (artwork of filteredArtworks(); track artwork.id) {
+          <div class="artwork-item" @fadeInUp>
+            <div class="artwork-image-container">
+              <img [src]="artwork.imageUrl" [alt]="artwork.title" class="artwork-image" (error)="handleImageError($event)">
+              <button 
+                class="favorite-btn"
+                [class.active]="favoritesService.isFavorite(artwork.id)"
+                (click)="toggleFavorite(artwork, $event)">
+                {{ favoritesService.isFavorite(artwork.id) ? '❤️' : '🤍' }}
+              </button>
+            </div>
+  
+            <div class="artwork-info">
+              <h3>{{ artwork.title }}</h3>
+              <p class="artist">Artist: {{ artwork.artistName }}</p>
+              <p class="price">Price: {{ artwork.price | currency:'USD':'symbol':'1.2-2' }}</p>
+              <p class="description">{{ artwork.description }}</p>
+             
+              <div class="artwork-actions">
+                <button class="action-btn add-to-cart" (click)="addToCart($event)">
+                    Add to Cart
+                  </button>
+                <button class="action-btn view-details" (click)="viewDetails(artwork.id)">
+                  View Details
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
