@@ -19,6 +19,7 @@ import { EventDetailsComponent } from './components/events/event-details/event-d
 import { EventFormComponent } from './components/events/event-form/event-form.component';
 import { EventTicketComponent } from './components/events/event-ticket/event-ticket.component';
 import { EventCheckoutComponent } from './components/events/event-checkout/event-checkout.component';
+import { EventManagementComponent } from './components/event-management/event-management.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -30,7 +31,7 @@ export const routes: Routes = [
   { path: 'favorites', component: FavoritesComponent },
   { path: 'user-profile', component: UserProfileComponent },
   { path: 'exhibitions', component: ExhibitionsComponent },  
-  // Admin routes with nested children - using 'admin-dashboard' as base path
+
   
   // User routes
   { 
@@ -78,6 +79,7 @@ export const routes: Routes = [
     canActivate: [authGuard],
     data: { role: 'USER' }
   },
+  // admin routes
   { 
     path: 'admin-dashboard', 
     component: AdminDashboardComponent,
@@ -87,7 +89,10 @@ export const routes: Routes = [
       { path: '', component: DashboardHomeComponent },
       { path: 'users', component: UserManagementComponent },
       { path: 'artworks', component: ArtworkManagementComponent },
-      { path: 'payments', component: PaymentManagementComponent }
+      { path: 'payments', component: PaymentManagementComponent },
+      { path: 'events', component: EventManagementComponent },
+      { path: 'events/new', component: EventFormComponent },
+      { path: 'events/edit/:id', component: EventFormComponent }
     ]
   },
   { path: '**', redirectTo: '' }

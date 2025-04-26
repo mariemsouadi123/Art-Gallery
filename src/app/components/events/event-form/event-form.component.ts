@@ -87,8 +87,8 @@ export class EventFormComponent implements OnInit {
       : this.eventService.createEvent(eventData);
 
     operation.subscribe({
-      next: (event: any) => {
-        this.router.navigate(['/events', event.id]);
+      next: () => {  // Remove the event parameter since we don't need it
+        this.router.navigate(['/admin-dashboard/events']);  // Navigate to events list
       },
       error: (err) => {
         console.error('Error saving event:', err);
@@ -98,9 +98,12 @@ export class EventFormComponent implements OnInit {
     });
   }
 
+  onCancel(): void {
+    this.router.navigate(['/admin-dashboard/events']);  // Navigate to events list
+  }
+
   private formatDateForInput(dateString: string): string {
     if (!dateString) return '';
-    // Convert ISO date to datetime-local format (YYYY-MM-DDTHH:MM)
     return dateString.substring(0, 16);
   }
 }
