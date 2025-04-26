@@ -12,4 +12,6 @@ import { HttpClientModule } from '@angular/common/http';
   styleUrls: ['./app.component.css'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA] // ✅ Ajout de CUSTOM_ELEMENTS_SCHEMA
 })
-export class AppComponent { }
+export class AppComponent { 
+  title = 'art-gallery';
+}

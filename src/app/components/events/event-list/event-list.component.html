@@ -1,0 +1,117 @@
+<div class="container mt-4">
+    <h2>Events</h2>
+    
+    <!-- Tab Navigation -->
+    <ul class="nav nav-tabs mb-4">
+      <li class="nav-item">
+        <button class="nav-link" 
+                [class.active]="activeTab === 'all'"
+                (click)="setActiveTab('all')">
+          All Events
+        </button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" 
+                [class.active]="activeTab === 'registered'"
+                (click)="setActiveTab('registered')">
+          My Registered Events
+        </button>
+      </li>
+    </ul>
+  
+    <!-- Loading Indicator -->
+    <div *ngIf="loading" class="text-center my-4">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  
+    <!-- All Events Tab -->
+    <div *ngIf="!loading && activeTab === 'all'">
+      <div *ngIf="allEvents.length === 0" class="alert alert-info">
+        No events found
+      </div>
+  
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        <div class="col" *ngFor="let event of allEvents">
+          <div class="card h-100">
+            <img [src]="event.imageUrl || 'assets/default-event.jpg'" 
+                 class="card-img-top" 
+                 [alt]="event.title">
+            <div class="card-body">
+              <h5 class="card-title">{{ event.title }}</h5>
+              <p class="card-text text-muted">
+                <i class="bi bi-calendar-event"></i> 
+                {{ event.startDate | date:'mediumDate' }} 
+                at {{ event.startDate | date:'shortTime' }}
+              </p>
+              <p class="card-text" *ngIf="event.location">
+                <i class="bi bi-geo-alt"></i> {{ event.location }}
+              </p>
+              <p class="card-text" *ngIf="event.onlineUrl">
+                <i class="bi bi-link-45deg"></i> Online Event
+              </p>
+              <p class="card-text">
+                <strong>{{ event.price | currency }}</strong>
+              </p>
+            </div>
+            <div class="card-footer bg-transparent">
+              <a [routerLink]="['/events', event.id]" 
+                 class="btn btn-outline-primary btn-sm">
+                Details
+              </a>
+              
+              <button *ngIf="!isUserRegistered(event.id)"
+                      (click)="registerForEvent(event.id)" 
+                      class="btn btn-primary btn-sm ms-2">
+                Register
+              </button>
+              <a *ngIf="isUserRegistered(event.id)"
+                 [routerLink]="['/events', event.id, 'ticket']"
+                 class="btn btn-success btn-sm ms-2">
+                View Ticket
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Registered Events Tab -->
+    <div *ngIf="!loading && activeTab === 'registered'">
+      <div *ngIf="registeredEvents.length === 0" class="alert alert-info">
+        You haven't registered for any events yet
+      </div>
+  
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        <div class="col" *ngFor="let event of registeredEvents">
+          <div class="card h-100">
+            <img [src]="event.imageUrl || 'assets/default-event.jpg'" 
+                 class="card-img-top" 
+                 [alt]="event.title">
+            <div class="card-body">
+              <h5 class="card-title">{{ event.title }}</h5>
+              <p class="card-text text-muted">
+                <i class="bi bi-calendar-event"></i> 
+                {{ event.startDate | date:'mediumDate' }} 
+                at {{ event.startDate | date:'shortTime' }}
+              </p>
+              <p class="card-text text-success">
+                <i class="bi bi-check-circle"></i> Registered
+              </p>
+            </div>
+            <div class="card-footer bg-transparent">
+              <a [routerLink]="['/events', event.id]" 
+                 class="btn btn-outline-primary btn-sm">
+                Details
+              </a>
+              <a [routerLink]="['/events', event.id, 'ticket']"
+                 class="btn btn-success btn-sm ms-2">
+                View Ticket
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

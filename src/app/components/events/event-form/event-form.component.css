@@ -1,0 +1,168 @@
+/* event-form.component.css - Fixed Pink Theme */
+
+/* Set the entire page background to soft pink */
+:host {
+    display: block;
+    background-color: #f8c8dc;
+    min-height: 100vh;
+    padding: 20px;
+  }
+  
+  :root {
+    --primary-gradient: linear-gradient(135deg, #8a2be2 0%, #4b0082 100%);
+    --secondary-gradient: linear-gradient(135deg, #ff8a00 0%, #e52e71 100%);
+    --pink-bg: #f8c8dc;
+    --card-bg: #ffffff;
+    --text-primary: #333333;
+    --text-secondary: #555555;
+    --gold-accent: #b8860b;
+    --input-bg: #ffffff;
+    --input-border: #cccccc;
+    --artistic-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Form container styling */
+  .container {
+    max-width: 800px;
+    padding: 2rem;
+    margin: 0 auto;
+    background: var(--card-bg);
+    border-radius: 1rem;
+    box-shadow: var(--artistic-shadow);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Header styling */
+  h2 {
+    color: var(--gold-accent);
+    font-weight: 700;
+    margin-bottom: 2rem;
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    position: relative;
+    padding-bottom: 1rem;
+  }
+  
+  h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: var(--primary-gradient);
+  }
+  
+  /* Form elements styling */
+  .form-label {
+    color: var(--text-primary);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+  
+  .form-control {
+    background-color: var(--input-bg);
+    border: 1px solid var(--input-border);
+    color: var(--text-primary);
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+    width: 100%;
+  }
+  
+  .form-control:focus {
+    border-color: var(--gold-accent);
+    box-shadow: 0 0 0 0.25rem rgba(184, 134, 11, 0.25);
+    outline: none;
+  }
+  
+  textarea.form-control {
+    min-height: 120px;
+    resize: vertical;
+  }
+  
+  /* Validation messages */
+  .text-danger {
+    color: #e74c3c !important;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+  }
+  
+  /* Fixed Button Styling */
+  .btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .btn-primary {
+    background: var(--primary-gradient);
+    color: white !important; /* Force white text */
+    position: relative;
+    overflow: hidden;
+    border: none;
+  }
+  
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4);
+  }
+  
+  .btn-outline-secondary {
+    background: transparent;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--text-primary);
+  }
+  
+  .btn-outline-secondary:hover {
+    background: rgba(0, 0, 0, 0.05);
+  }
+  
+  /* Button container */
+  .d-flex {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  
+  /* Form group spacing */
+  .mb-3 {
+    margin-bottom: 1.5rem !important;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .container {
+      padding: 1.5rem;
+    }
+    
+    .d-flex {
+      flex-direction: column;
+    }
+    
+    .btn {
+      width: 100%;
+    }
+  }
+  
+  /* Make sure datetime inputs are visible */
+  input[type="datetime-local"] {
+    padding: 0.65rem 1rem;
+  }
+  
+  /* Disabled button styling */
+  button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  /* Force all text to be visible */
+  body, .container, .form-control, .btn {
+    color: var(--text-primary);
+  }
